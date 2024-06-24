@@ -26,6 +26,7 @@
   align-items: center;
   flex-direction: column;
   width: calc(100% / 2.5);
+  cursor: pointer;
 }
 
 .name {

@@ -6,9 +6,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import { burgerPropTypes } from "../../utils/propTypes";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({ setModal, data }) => {
   const [type, setTab] = useState("Булки");
   const ingredientsId = [
     "60666c42cc7b410027a1a9b1",
@@ -20,9 +21,17 @@ const BurgerIngredients = (props) => {
     "60666c42cc7b410027a1a9bd",
   ];
 
+  const modalOpen = (data) => {
+    setModal({
+      visible: true,
+      title: "Детали ингредиента",
+      content: <IngredientDetails data={data} />,
+    });
+  };
+
   const IngredientInfo = ({ data }) => {
     return (
-      <li className={`${styles.info}`}>
+      <li className={`${styles.info}`} onClick={() => modalOpen(data)}>
         {ingredientsId.filter((ingredient) => ingredient === data._id).length >
         0 ? (
           <div className={styles.counter}>
@@ -85,19 +94,19 @@ const BurgerIngredients = (props) => {
         {type === "Булки"}
         <div className="text text_type_main-medium mt-10">Булки</div>
         <IngredientTypes
-          data={props.data.filter((ingredient) => ingredient.type === "bun")}
+          data={data.filter((ingredient) => ingredient.type === "bun")}
         />
 
         {type === "Соусы"}
         <div className="text text_type_main-medium mt-10">Соусы</div>
         <IngredientTypes
-          data={props.data.filter((ingredient) => ingredient.type === "sauce")}
+          data={data.filter((ingredient) => ingredient.type === "sauce")}
         />
 
         {type === "Начинки"}
         <div className="text text_type_main-medium mt-10">Начинки</div>
         <IngredientTypes
-          data={props.data.filter((ingredient) => ingredient.type === "main")}
+          data={data.filter((ingredient) => ingredient.type === "main")}
         />
       </div>
     </div>
@@ -108,4 +117,5 @@ export default BurgerIngredients;
 
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(burgerPropTypes.isRequired),
+  setModal: PropTypes.func.isRequired,
 };

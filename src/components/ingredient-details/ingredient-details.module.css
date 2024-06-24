@@ -1,0 +1,17 @@
+.ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredient ul {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ingredient li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
