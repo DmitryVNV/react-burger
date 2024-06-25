@@ -5,7 +5,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import styles from "./modal.module.css";
 
-const root = document.getElementById("root");
+const root = document.getElementById("modals");
 
 const Modal = (props) => {
   const closeModalWindow = () => {
@@ -16,16 +16,15 @@ const Modal = (props) => {
     });
   };
 
-  const closeByEscape = (e) => {
-    if (e.key === "Escape") closeModalWindow();
-  };
-
   useEffect(() => {
+    const closeByEscape = (e) => {
+      if (e.key === "Escape") closeModalWindow();
+    };
     window.addEventListener("keydown", closeByEscape);
     return () => {
       window.removeEventListener("keydown", closeByEscape);
     };
-  });
+  }, []);
 
   return ReactDOM.createPortal(
     <>
