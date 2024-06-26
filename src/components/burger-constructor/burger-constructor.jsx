@@ -7,19 +7,27 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { burgerPropTypes } from "../../utils/propTypes";
+import OrderDetails from "../order-details/order-details";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = (props) => {
-  const bunProps = props.data.find(
-    (ingredient) => (ingredient.id = "60666c42cc7b410027a1a9b1"),
+const BurgerConstructor = ({ setModal, data }) => {
+  const bunProps = data.find(
+    (ingredient) => (ingredient.id = "643d69a5c3f7b9001cfa093c"),
   );
   const ingredientsId = [
-    "60666c42cc7b410027a1a9bc",
-    "60666c42cc7b410027a1a9bb",
-    "60666c42cc7b410027a1a9b8",
-    "60666c42cc7b410027a1a9b7",
-    "60666c42cc7b410027a1a9bd",
+    "643d69a5c3f7b9001cfa093e",
+    "643d69a5c3f7b9001cfa0942",
+    "643d69a5c3f7b9001cfa0946",
+    "643d69a5c3f7b9001cfa0949",
+    "643d69a5c3f7b9001cfa094a",
   ];
+
+  const modalOpen = () => {
+    setModal({
+      visible: true,
+      content: <OrderDetails orderNumber="012345" />,
+    });
+  };
 
   return (
     <div className={`${styles.constructor}`}>
@@ -34,7 +42,7 @@ const BurgerConstructor = (props) => {
       </div>
 
       <div className={`${styles.scroll}`}>
-        {props.data.map((ingredient, id) =>
+        {data.map((ingredient, id) =>
           ingredientsId.includes(ingredient._id) ? (
             <div className={`${styles.ingredient} ml-4 mr-4 mb-4 `} key={id}>
               <DragIcon type="primary" />
@@ -68,7 +76,12 @@ const BurgerConstructor = (props) => {
             <CurrencyIcon />
           </div>
 
-          <Button htmlType="button" type="primary" size="large">
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            onClick={modalOpen}
+          >
             Оформить заказ
           </Button>
         </div>
@@ -81,4 +94,5 @@ export default BurgerConstructor;
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(burgerPropTypes.isRequired),
+  setModal: PropTypes.func.isRequired,
 };
