@@ -1,41 +1,43 @@
+import React, { useEffect } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
+
 import Modal from "../modal/modal";
-import { useEffect, useState } from "react";
-import { API_URL } from "../../utils/data";
+import { CLOSE_MODAL } from "../../services/actions/modal";
+import { VIEWED_INGREDIENT } from "../../services/actions/ingredients";
+
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import { getIngredientsEnhancer } from "../../services/actions/ingredients";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useSelector, useDispatch } from "react-redux";
 
 function App() {
-  const [data, setData] = useState([]);
-  const [hasError, setError] = useState(false);
-  const [isLoading, setLoading] = useState(true);
-  const [modal, setModal] = useState({
-    visible: false,
-    title: null,
-    content: null,
-  });
+  const { isLoading, hasError, currentIngredients } = useSelector(
+    (store) => store.ingredients,
+  );
+  const { isModalVisible, modalTitle, modalContent } = useSelector(
+    (store) => store.modal,
+  );
 
-  const apiURL = API_URL + "/ingredients";
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(apiURL)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Невозможно загрузить ингредиенты");
-      })
-      .then((data) => {
-        data.success ? setData(data.data) : setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      })
-      .catch((e) => {
-        setError(true);
+    dispatch(getIngredientsEnhancer());
+  }, [dispatch]);
+
+  const closeModal = () => {
+    dispatch({
+      type: CLOSE_MODAL,
+    });
+    currentIngredients &&
+      dispatch({
+        type: VIEWED_INGREDIENT,
+        item: null,
       });
-  }, [apiURL]);
+  };
 
   return (
     <>
@@ -52,16 +54,18 @@ function App() {
               Ошибка при загрузке ингредиентов
             </div>
           )}
-          {!isLoading && !hasError && data.length && (
+          {!isLoading && !hasError && (
             <>
-              <BurgerIngredients data={data} setModal={setModal} />
-              <BurgerConstructor data={data} setModal={setModal} />
+              <DndProvider backend={HTML5Backend}>
+                <BurgerIngredients />
+                <BurgerConstructor />
+              </DndProvider>
             </>
           )}
         </div>
-        {modal.visible && (
-          <Modal setModal={setModal} title={modal.title}>
-            {modal.content}
+        {isModalVisible && (
+          <Modal closeModalWindow={closeModal} title={modalTitle}>
+            {modalContent}
           </Modal>
         )}
       </main>
