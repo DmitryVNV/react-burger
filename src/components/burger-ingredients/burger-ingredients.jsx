@@ -2,28 +2,24 @@ import React, { useMemo, useState, useRef } from "react";
 import styles from "./burger-ingredients.module.css";
 import { useDrag } from "react-dnd";
 import { v4 } from "uuid";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab, CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useSelector, useDispatch } from "react-redux";
 import { OPEN_MODAL } from "../../services/actions/modal";
 import { VIEWED_INGREDIENT } from "../../services/actions/ingredients";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const { ingredientData, constructorData } = useSelector(
-    (store) => store.ingredients,
-  );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { ingredientData, constructorData } = useSelector((store) => store.ingredients);
 
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
-  const filterByType = (type) =>
-    ingredientData.filter((ingredient) => ingredient.type === type);
+  const filterByType = (type) => ingredientData.filter((ingredient) => ingredient.type === type);
   const buns = useMemo(() => filterByType("bun"), [ingredientData]);
   const sauces = useMemo(() => filterByType("sauce"), [ingredientData]);
   const mains = useMemo(() => filterByType("main"), [ingredientData]);
@@ -38,6 +34,7 @@ const BurgerIngredients = () => {
       modalTitle: "Детали ингредиента",
       modalContent: <IngredientDetails data={data} />,
     });
+    navigate(`/ingredients/${data._id}`, { state: { background: location } });
   };
   const [currentTab, setCurrentTab] = useState("buns");
 
@@ -60,8 +57,7 @@ const BurgerIngredients = () => {
 
   const count = (id) => {
     const ingredientCount =
-      constructorData.ingredients?.filter((ingredient) => ingredient._id === id)
-        .length || 0;
+      constructorData.ingredients?.filter((ingredient) => ingredient._id === id).length || 0;
     const bunCount = constructorData.bun?._id === id ? 2 : 0;
     return ingredientCount + bunCount;
   };
@@ -97,27 +93,21 @@ const BurgerIngredients = () => {
         ref={dragRef}
         style={{ ingredientOpacity }}
       >
-        {constructorData && count(data._id) > 0 && (
-          <Counter count={count(data._id)}></Counter>
-        )}
+        {constructorData && count(data._id) > 0 && <Counter count={count(data._id)}></Counter>}
 
         <img src={data.image} alt={data.name}></img>
         <div className={`${styles.price} text text_type_digits-default mt-1 mb-1`}>
           {data.price} &nbsp;
           <CurrencyIcon />
         </div>
-        <div className={`${styles.name} text text_type_main-default`}>
-          {data.name}
-        </div>
+        <div className={`${styles.name} text text_type_main-default`}>{data.name}</div>
       </li>
     );
   };
 
   return (
     <div className={`${styles.ingredients}`}>
-      <div className="text text_type_main-large mb-5 mt-10">
-        Соберите бургер
-      </div>
+      <div className="text text_type_main-large mb-5 mt-10">Соберите бургер</div>
       <div className={styles.tabs}>
         <Tab value="buns" active={currentTab === "buns"} onClick={onTabClick}>
           Булки
@@ -130,24 +120,9 @@ const BurgerIngredients = () => {
         </Tab>
       </div>
       <div className={`${styles.scroll}`} onScroll={tabChanger}>
-        <IngredientsTypes
-          title="Булки"
-          data={buns}
-          typeId="buns"
-          innerRef={bunRef}
-        />
-        <IngredientsTypes
-          title="Соусы"
-          data={sauces}
-          typeId="sauces"
-          innerRef={sauceRef}
-        />
-        <IngredientsTypes
-          title="Начинки"
-          data={mains}
-          typeId="mains"
-          innerRef={mainRef}
-        />
+        <IngredientsTypes title="Булки" data={buns} typeId="buns" innerRef={bunRef} />
+        <IngredientsTypes title="Соусы" data={sauces} typeId="sauces" innerRef={sauceRef} />
+        <IngredientsTypes title="Начинки" data={mains} typeId="mains" innerRef={mainRef} />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ main {
   width: 100%;
 }
 
-.content {
+main > div:first-child {
   display: flex;
   width: 1200px;
 }
