@@ -1,7 +1,7 @@
-import { memo, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserEnhancer } from "../services/actions/user";
-import { NavLink, Routes, Route, useLocation, useMatch } from "react-router-dom";
+import { NavLink, Routes, Route } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderHistory from "../components/order-history/order-history";
 
@@ -11,10 +11,6 @@ import styles from "./profile.module.css";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
-  const matchProfile = useMatch("/profile");
-  const matchOrders = useMatch("/profile/orders");
-  const pathname = useLocation().pathname;
-
   const onLogout = () => {
     dispatch(logoutUserEnhancer());
   };

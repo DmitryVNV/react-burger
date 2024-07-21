@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { resetPasswordEnhancer, RESET_PASSWORD_SET_EMAIL } from "../services/actions/user";
+import { resetPasswordEnhancer, RESET_PASSWORD_SET_EMAIL, setForgotPasswordVisited } from "../services/actions/user";
 
 import styles from "./page.module.css";
 
@@ -29,6 +29,10 @@ const ForgotPasswordPage = () => {
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    dispatch(setForgotPasswordVisited());
+  }, [dispatch]);
 
   return (
     <form className={styles.main} onSubmit={resetPassword}>

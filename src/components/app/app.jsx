@@ -7,10 +7,11 @@ import { VIEWED_INGREDIENT } from "../../services/actions/ingredients";
 import { DELETE_ORDER } from "../../services/actions/order";
 import { checkUserAuth } from "../../services/actions/user";
 
-import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
-import ProtectedRoute from "../protected-route/protected-route";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { ForAuth, ForNonAuth } from "../protected-route/protected-route";
 
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { getIngredientsEnhancer } from "../../services/actions/ingredients";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -46,16 +47,12 @@ function App() {
       navigate("/");
     };
 
-    const {
-      isAuthenthicated,
-      resetPasswordFailed,
-      resetPasswordMessage,
-      setNewPasswordFailed,
-      setNewPasswordMessage,
-    } = useSelector((store) => store.user);
-
     useEffect(() => {
       dispatch(checkUserAuth());
+    }, [dispatch]);
+
+    useEffect(() => {
+      dispatch(getIngredientsEnhancer());
     }, [dispatch]);
 
     return (
@@ -63,27 +60,12 @@ function App() {
         <AppHeader />
         <Routes location={background || location}>
           <Route path="/" element={<MainPage />} />
-          <Route
-            path="/ingredients/:id"
-            element={<IngredientDetails title="Детали ингредиента" />}
-          />
-          <Route path="/login/" element={isAuthenthicated ? <Navigate to="/" /> : <LoginPage />} />
-          <Route
-            path="/register/"
-            element={isAuthenthicated ? <Navigate to="/" /> : <RegisterPage />}
-          />
-          <Route
-            path="/forgot-password/"
-            element={isAuthenthicated ? <Navigate to="/" /> : <ForgotPasswordPage />}
-          />
-          <Route
-            path="/reset-password/"
-            element={isAuthenthicated ? <Navigate to="/" /> : <ResetPasswordPage />}
-          />
-          <Route
-            path="/profile/"
-            element={!isAuthenthicated ? <Navigate to="/login/" /> : <ProfilePage />}
-          />
+          <Route path="/ingredients/:id" element={<IngredientDetails title="Детали ингредиента" />} />
+          <Route path="/login" element={<ForNonAuth children={<LoginPage />} />} />
+          <Route path="/register" element={<ForNonAuth children={<RegisterPage />} />} />
+          <Route path="/forgot-password" element={<ForNonAuth children={<ForgotPasswordPage />} />} />
+          <Route path="/reset-password" element={<ForNonAuth children={<ResetPasswordPage />} />} />
+          <Route path="/profile" element={<ForAuth children={<ProfilePage />} />} />
           <Route path="*" element={<NotFound404 />} />
         </Routes>
 

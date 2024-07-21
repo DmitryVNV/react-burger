@@ -1,6 +1,6 @@
 import styles from "./ingredient-details.module.css";
 import React, { memo, useEffect, useState } from "react";
-import { responseIngredients } from "../../utils/api";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -23,40 +23,39 @@ const IngredientDetails = (props) => {
     carbohydrates: "",
     isLoading: false,
   });
+  const ingredients = useSelector((store) => store.ingredients.ingredientData);
 
   const { id } = useParams();
-  const finalId = id != null ? id : props.data._id;
+  const finalId = id != null ? id : props.data?._id;
 
   useEffect(() => {
-    setViewedIngredient((currentIngredients) => {
-      return {
-        ...currentIngredients,
-        isLoading: true,
-      };
-    });
-    responseIngredients()
-      .then((data) => {
-        const ingredient = data.find((el) => el._id === finalId);
-        setViewedIngredient({
-          image_large: ingredient.image_large,
-          name: ingredient.name,
-          calories: ingredient.calories,
-          proteins: ingredient.proteins,
-          fat: ingredient.fat,
-          carbohydrates: ingredient.carbohydrates,
-          isLoading: false,
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        setViewedIngredient((currentIngredients) => {
-          return {
-            ...currentIngredients,
-            isLoading: false,
-          };
-        });
+    if (!ingredients || ingredients.length === 0) {
+      return;
+    }
+
+    setViewedIngredient((currentIngredients) => ({
+      ...currentIngredients,
+      isLoading: true,
+    }));
+
+    const ingredient = ingredients.find((el) => el._id === finalId);
+    if (ingredient) {
+      setViewedIngredient({
+        image_large: ingredient.image_large,
+        name: ingredient.name,
+        calories: ingredient.calories,
+        proteins: ingredient.proteins,
+        fat: ingredient.fat,
+        carbohydrates: ingredient.carbohydrates,
+        isLoading: false,
       });
-  }, [finalId]);
+    } else {
+      setViewedIngredient((currentIngredients) => ({
+        ...currentIngredients,
+        isLoading: false,
+      }));
+    }
+  }, [finalId, ingredients]);
 
   return (
     <section className={styles.ingredient}>

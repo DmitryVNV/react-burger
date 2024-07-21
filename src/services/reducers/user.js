@@ -24,6 +24,7 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILED,
+  SET_FORGOT_PASSWORD_VISITED,
 } from "../actions/user";
 
 const initialState = {
@@ -60,6 +61,8 @@ const initialState = {
 
   updateUserRequest: false,
   updateUserFailed: false,
+
+  forgotPasswordVisited: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -267,6 +270,11 @@ export const userReducer = (state = initialState, action) => {
     case UPDATE_USER_FAILED: {
       return { ...state, updateUserFailed: true, updateUserRequest: false };
     }
+    case SET_FORGOT_PASSWORD_VISITED:
+      return {
+        ...state,
+        forgotPasswordVisited: true,
+      };
     default: {
       return state;
     }

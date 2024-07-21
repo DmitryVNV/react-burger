@@ -47,6 +47,8 @@ export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_FAILED = "UPDATE_USER_FAILED";
 
+export const SET_FORGOT_PASSWORD_VISITED = "SET_FORGOT_PASSWORD_VISITED";
+
 export const resetPasswordEnhancer = (email) => {
   return function (dispatch) {
     dispatch({
@@ -54,17 +56,10 @@ export const resetPasswordEnhancer = (email) => {
     });
     passwordReset(email)
       .then((res) => {
-        if (res && res.success) {
-          dispatch({
-            type: RESET_PASSWORD_SUCCESS,
-            response: res,
-          });
-        } else {
-          dispatch({
-            type: RESET_PASSWORD_FAILED,
-            error: res.message,
-          });
-        }
+        dispatch({
+          type: RESET_PASSWORD_SUCCESS,
+          response: res,
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -335,3 +330,7 @@ export const checkUserAuth = () => {
     }
   };
 };
+
+export const setForgotPasswordVisited = () => ({
+  type: SET_FORGOT_PASSWORD_VISITED,
+});

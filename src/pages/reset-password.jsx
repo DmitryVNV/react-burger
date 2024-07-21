@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Input,
@@ -14,6 +14,15 @@ const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [values, setValues] = useState({});
+  
+  const forgotPasswordVisited = useSelector((state) => state.user.forgotPasswordVisited);
+  
+  useEffect(() => {
+    if (!forgotPasswordVisited) {
+      navigate('/forgot-password');
+    }
+  }, [forgotPasswordVisited, navigate]);
+  
   const handleChange = (event) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
