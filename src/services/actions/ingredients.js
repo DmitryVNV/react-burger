@@ -8,6 +8,7 @@ export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const DELETE_INGREDIENT = "DELETE_INGREDIENT";
 export const EXCHANGE_INGREDIENTS = "EXCHANGE_INGREDIENTS";
 export const VIEWED_INGREDIENT = "VIEWED_INGREDIENT";
+export const CLEAR_DATA = "CLEAR_DATA";
 
 export const getIngredientsEnhancer = () => {
   return function (dispatch) {

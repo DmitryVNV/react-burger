@@ -1,76 +1,91 @@
 import React, { useEffect } from "react";
-import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
 
 import Modal from "../modal/modal";
 import { CLOSE_MODAL } from "../../services/actions/modal";
 import { VIEWED_INGREDIENT } from "../../services/actions/ingredients";
+import { DELETE_ORDER } from "../../services/actions/order";
+import { checkUserAuth } from "../../services/actions/user";
 
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { ForAuth, ForNonAuth } from "../protected-route/protected-route";
+
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredientsEnhancer } from "../../services/actions/ingredients";
 
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  MainPage,
+  LoginPage,
+  ProfilePage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  NotFound404,
+} from "../../pages";
 
 function App() {
-  const { isLoading, hasError, currentIngredients } = useSelector(
-    (store) => store.ingredients,
-  );
-  const { isModalVisible, modalTitle, modalContent } = useSelector(
-    (store) => store.modal,
-  );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getIngredientsEnhancer());
-  }, [dispatch]);
-
-  const closeModal = () => {
-    dispatch({
-      type: CLOSE_MODAL,
-    });
-    currentIngredients &&
+  const ModalSwitch = () => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const state = location.state || {};
+    const background = state.background;
+    const { currentIngredients } = useSelector((store) => store.ingredients);
+    const closeModal = () => {
       dispatch({
-        type: VIEWED_INGREDIENT,
-        item: null,
+        type: CLOSE_MODAL,
       });
+      dispatch({
+        type: DELETE_ORDER,
+      });
+      currentIngredients &&
+        dispatch({
+          type: VIEWED_INGREDIENT,
+          item: null,
+        });
+      navigate("/");
+    };
+
+    useEffect(() => {
+      dispatch(checkUserAuth());
+    }, [dispatch]);
+
+    useEffect(() => {
+      dispatch(getIngredientsEnhancer());
+    }, [dispatch]);
+
+    return (
+      <>
+        <AppHeader />
+        <Routes location={background || location}>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/ingredients/:id" element={<IngredientDetails title="Детали ингредиента" />} />
+          <Route path="/login" element={<ForNonAuth children={<LoginPage />} />} />
+          <Route path="/register" element={<ForNonAuth children={<RegisterPage />} />} />
+          <Route path="/forgot-password" element={<ForNonAuth children={<ForgotPasswordPage />} />} />
+          <Route path="/reset-password" element={<ForNonAuth children={<ResetPasswordPage />} />} />
+          <Route path="/profile" element={<ForAuth children={<ProfilePage />} />} />
+          <Route path="*" element={<NotFound404 />} />
+        </Routes>
+
+        {background && (
+          <Routes>
+            <Route
+              path="/ingredients/:id"
+              element={
+                <Modal closeModalWindow={closeModal} title="Детали ингредиента">
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Routes>
+        )}
+      </>
+    );
   };
 
-  return (
-    <>
-      <AppHeader />
-      <main>
-        <div className={styles.content}>
-          {isLoading && (
-            <div className={`${styles.notification} text text_type_main-medium`}>
-              Загрузка
-            </div>
-          )}
-          {hasError && (
-            <div className={`${styles.error} text text_type_main-medium`}>
-              Ошибка при загрузке ингредиентов
-            </div>
-          )}
-          {!isLoading && !hasError && (
-            <>
-              <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-              </DndProvider>
-            </>
-          )}
-        </div>
-        {isModalVisible && (
-          <Modal closeModalWindow={closeModal} title={modalTitle}>
-            {modalContent}
-          </Modal>
-        )}
-      </main>
-    </>
-  );
+  return <ModalSwitch />;
 }
 
 export default App;

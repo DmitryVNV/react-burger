@@ -1,0 +1,26 @@
+.section {
+  width: 1100px;
+  height: calc(100vh - 100px);
+  display: flex;
+}
+.section ul {
+  padding-left: 0;
+}
+.section li {
+  list-style-type: none;
+  margin: calc(var(--offset-base-size) * 6) 0;
+}
+
+.userContainer {
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menuContainer {
+  width: 40%;
+}
+
+.link {
+  text-decoration: none;
+}

@@ -6,6 +6,7 @@ import {
   DELETE_INGREDIENT,
   EXCHANGE_INGREDIENTS,
   VIEWED_INGREDIENT,
+  CLEAR_DATA,
 } from "../actions/ingredients";
 
 const mainState = {
@@ -77,11 +78,7 @@ export const ingredientsReducer = (state = mainState, action) => {
     }
     case EXCHANGE_INGREDIENTS: {
       const rearrangedIngredients = [...state.constructorData.ingredients];
-      rearrangedIngredients.splice(
-        action.toIndex,
-        0,
-        rearrangedIngredients.splice(action.fromIndex, 1)[0],
-      );
+      rearrangedIngredients.splice(action.toIndex, 0, rearrangedIngredients.splice(action.fromIndex, 1)[0]);
       return {
         ...state,
         constructorData: {
@@ -95,6 +92,9 @@ export const ingredientsReducer = (state = mainState, action) => {
         ...state,
         currentIngredients: action.item,
       };
+    }
+    case CLEAR_DATA: {
+      return { ...state, constructorData: { bun: null, ingredients: [] } };
     }
     default: {
       return state;

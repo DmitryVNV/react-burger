@@ -3,6 +3,7 @@ import { sendOrder } from "../../utils/api";
 export const CREATE_ORDER_REQUEST = "CREATE_ORDER_REQUEST";
 export const CREATE_ORDER_SUCCESS = "CREATE_ORDER_SUCCESS";
 export const CREATE_ORDER_FAILED = "CREATE_ORDER_FAILED";
+export const DELETE_ORDER = "DELETE_ORDER";
 
 export const sendOrderEnhancer = (ingredientIds) => {
   return function (dispatch) {
