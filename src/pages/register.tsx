@@ -1,27 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, SyntheticEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Input, Button, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { registerUserEnhancer } from "../services/actions/user";
 import { loginUserEnhancer } from "../services/actions/user";
-
+import { TUser, TTarget } from "../utils/types";
 import styles from "./page.module.css";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState<TUser>({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const { registerUserFailed } = useSelector((state) => state.user);
+  const { registerUserFailed } = useSelector((state: any) => state.user);
 
-  const handleChange = (event) => {
+  const handleChange = (event: TTarget) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
     });
   };
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(registerUserEnhancer(values.email, values.password, values.name));
-    dispatch(loginUserEnhancer(values.email, values.password));
+    dispatch(registerUserEnhancer(values.email, values.password, values.name) as any);
+    dispatch(loginUserEnhancer(values.email, values.password) as any);
   };
 
   return (
@@ -36,6 +40,8 @@ const RegisterPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.name || ""}
+			onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
         <div className={`${styles.input} mb-6 mt-6`}>
@@ -46,6 +52,8 @@ const RegisterPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.email || ""}
+			onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
 

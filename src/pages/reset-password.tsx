@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import {
@@ -7,15 +7,18 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { setNewPasswordEnhancer } from "../services/actions/user";
-
+import { TTarget, TNewPassword } from "../utils/types";
 import styles from "./page.module.css";
 
 const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState<TNewPassword>({
+    newPassword: "",
+    token: "",
+  });
   
-  const forgotPasswordVisited = useSelector((state) => state.user.forgotPasswordVisited);
+  const forgotPasswordVisited = useSelector((state: any) => state.user.forgotPasswordVisited);
   
   useEffect(() => {
     if (!forgotPasswordVisited) {
@@ -23,14 +26,14 @@ const ResetPasswordPage = () => {
     }
   }, [forgotPasswordVisited, navigate]);
   
-  const handleChange = (event) => {
+  const handleChange = (event: TTarget) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
     });
   };
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(setNewPasswordEnhancer(values.newPassword, values.token));
+    dispatch(setNewPasswordEnhancer(values.newPassword, values.token) as any);
 	navigate("/login");
   };
 
@@ -54,6 +57,8 @@ const ResetPasswordPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.token || ""}
+			onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
 

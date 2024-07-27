@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./burger-constructor.module.css";
-import {
-  CurrencyIcon,
-  ConstructorElement,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon, ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorIngredient from "../ingredient-constructor/ingredient-constructor";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +9,7 @@ import { useDrop } from "react-dnd";
 import { ADD_INGREDIENT } from "../../services/actions/ingredients";
 import { OPEN_MODAL } from "../../services/actions/modal";
 import { sendOrderEnhancer } from "../../services/actions/order";
+import { IIngredientWithUuid } from "../../utils/types";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -28,22 +25,17 @@ const BurgerConstructor = () => {
       isHover: monitor.isOver(),
     }),
   });
-  const { isAuthenthicated } = useSelector((store) => store.user);
-  const { constructorData } = useSelector((store) => store.ingredients);
-  const { order, orderError, orderIsLoading } = useSelector(
-    (store) => store.order
-  );
-  const bun = constructorData.bun;
-  const ingredients = constructorData.ingredients;
+  const { isAuthenthicated } = useSelector((store: any) => store.user);
+  const { constructorData } = useSelector((store: any) => store.ingredients);
+  const { order, orderError, orderIsLoading } = useSelector((store: any) => store.order);
+  const bun: IIngredientWithUuid = constructorData.bun;
+  const ingredients: IIngredientWithUuid[] = constructorData.ingredients;
   const navigate = useNavigate();
-  
+
   const modalOpen = async () => {
     if (isAuthenthicated) {
-      const ingredientIds = [
-        bun._id,
-        ...ingredients.map((ingredient) => ingredient._id),
-      ];
-      dispatch(sendOrderEnhancer(ingredientIds));
+      const ingredientIds: string[] = [bun._id, ...ingredients.map((ingredient) => ingredient._id)];
+      dispatch(sendOrderEnhancer(ingredientIds) as any);
     } else {
       navigate("/login");
     }
@@ -74,11 +66,11 @@ const BurgerConstructor = () => {
     }
   }, [orderError]);
 
-  const [totalPrice, setTotalPrice] = useState(0);
-  
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
   useEffect(() => {
     const ingredientsPrice = constructorData.ingredients?.reduce(
-      (sum, ingredient) => sum + ingredient.price,
+      (sum: number, ingredient: IIngredientWithUuid) => sum + ingredient.price,
       0,
     );
     const bunPrice = constructorData.bun?.price || 0;
@@ -88,57 +80,46 @@ const BurgerConstructor = () => {
       setTotalPrice(newTotalPrice);
     }
   }, [constructorData]);
-  
+
   return (
-    <div
-      className={`${styles.constructor} ${isHover ? styles.onHover : ""}`}
-      ref={dropTarget}
-    >
+    <div className={`${styles.constructor} ${isHover ? styles.onHover : ""}`} ref={dropTarget}>
       <div className="mt-25 mb-4 ml-4 mr-4 pl-8">
         {bun && (
           <ConstructorElement
             text={bun.name + " (верх)"}
             price={bun.price}
             thumbnail={bun.image}
-			type="top"
-            isLocked="true"
+            type="top"
+            isLocked={true}
           />
         )}
       </div>
-	  <div className={`${styles.scroll}`}>
+      <div className={`${styles.scroll}`}>
         {constructorData.ingredients.length === 0 && !bun && (
-          <div className="text text_type_main-medium ml-30 mb-8">
-            Перетащите сюда ингредиенты
-          </div>
+          <div className="text text_type_main-medium ml-30 mb-8">Перетащите сюда ингредиенты</div>
         )}
         {ingredients.map((ingredient, i) => (
-		  <div key={i} className={`${styles.ingredient} ml-10 mr-4`}>
-          <ConstructorIngredient
-            ingredient={ingredient}
-            index={i}
-            key={ingredient._uuid}
-          />
-		 </div>
+          <div key={i} className={`${styles.ingredient} ml-10 mr-4`}>
+            <ConstructorIngredient ingredient={ingredient} index={i} key={ingredient._uuid} />
+          </div>
         ))}
       </div>
-     <div className="mt-4 ml-4 mr-4 pl-8">
+      <div className="mt-4 ml-4 mr-4 pl-8">
         {bun && (
           <ConstructorElement
             text={bun.name + " (низ)"}
             price={bun.price}
             thumbnail={bun.image}
             type="bottom"
-            isLocked="true"
+            isLocked={true}
           />
         )}
       </div>
       <div className={`${styles.submit_block}`}>
         <div className={`${styles.submit_button} pr-4`}>
           <div className="price">
-            <span className="text text_type_digits-medium mr-2">
-              {totalPrice}
-            </span>
-            <CurrencyIcon />
+            <span className="text text_type_digits-medium mr-2">{totalPrice}</span>
+            <CurrencyIcon type="primary" />
           </div>
 
           <Button

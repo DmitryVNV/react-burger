@@ -49,8 +49,8 @@ export const UPDATE_USER_FAILED = "UPDATE_USER_FAILED";
 
 export const SET_FORGOT_PASSWORD_VISITED = "SET_FORGOT_PASSWORD_VISITED";
 
-export const resetPasswordEnhancer = (email) => {
-  return function (dispatch) {
+export const resetPasswordEnhancer = (email: string) => {
+  return function (dispatch: any) {
     dispatch({
       type: RESET_PASSWORD_REQUEST,
     });
@@ -71,8 +71,8 @@ export const resetPasswordEnhancer = (email) => {
   };
 };
 
-export const setNewPasswordEnhancer = (newPassword, token) => {
-  return function (dispatch) {
+export const setNewPasswordEnhancer = (newPassword: string, token: string) => {
+  return function (dispatch: any) {
     dispatch({
       type: SET_NEW_PASSWORD_REQUEST,
     });
@@ -99,8 +99,8 @@ export const setNewPasswordEnhancer = (newPassword, token) => {
   };
 };
 
-export const registerUserEnhancer = (email, password, name) => {
-  return function (dispatch) {
+export const registerUserEnhancer = (email: string, password: string, name: string) => {
+  return function (dispatch: any) {
     dispatch({
       type: REGISTER_USER_REQUEST,
     });
@@ -129,8 +129,8 @@ export const registerUserEnhancer = (email, password, name) => {
   };
 };
 
-export const loginUserEnhancer = (email, password) => {
-  return function (dispatch) {
+export const loginUserEnhancer = (email: string, password: string) => {
+  return function (dispatch: any) {
     dispatch({
       type: LOGIN_USER_REQUEST,
     });
@@ -162,7 +162,7 @@ export const loginUserEnhancer = (email, password) => {
 };
 
 export const logoutUserEnhancer = () => {
-  return function (dispatch) {
+  return function (dispatch: any) {
     const tokenBody = { token: getCookie("refreshToken") };
     dispatch({
       type: LOGOUT_USER_REQUEST,
@@ -194,7 +194,7 @@ export const logoutUserEnhancer = () => {
 };
 
 export const updateTokenEnhancer = () => {
-  return function (dispatch) {
+  return function (dispatch: any) {
     dispatch({
       type: REFRESH_TOKEN_REQUEST,
     });
@@ -224,7 +224,7 @@ export const updateTokenEnhancer = () => {
 };
 
 export const getUserEnhancer = () => {
-  return function (dispatch) {
+  return function (dispatch: any) {
     dispatch({
       type: GET_USER_REQUEST,
     });
@@ -247,8 +247,8 @@ export const getUserEnhancer = () => {
   };
 };
 
-export const updateUserEnhancer = (name, email, password) => {
-  return function (dispatch) {
+export const updateUserEnhancer = (name: string, email: string, password: string) => {
+  return function (dispatch: any) {
     dispatch({
       type: UPDATE_USER_REQUEST,
     });
@@ -277,7 +277,7 @@ export const updateUserEnhancer = (name, email, password) => {
 };
 
 export const checkUserAuth = () => {
-  return function (dispatch) {
+  return function (dispatch: any) {
     const isAccessTokenExist = document.cookie.indexOf("accessToken=") !== -1;
     const isRefreshTokenExist = document.cookie.indexOf("refreshToken=") !== -1;
     if (!isAccessTokenExist && isRefreshTokenExist) {

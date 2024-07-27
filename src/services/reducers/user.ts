@@ -65,7 +65,7 @@ const initialState = {
   forgotPasswordVisited: false,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case RESET_PASSWORD_REQUEST: {
       return {

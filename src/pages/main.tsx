@@ -15,9 +15,9 @@ import { DELETE_ORDER } from "../services/actions/order";
 import styles from "./main.module.css";
 
 function MainPage() {
-  const { isLoading, hasError, currentViewedIngredient } = useSelector((store) => store.ingredients);
-  const { isModalVisible, modalTitle, modalContent } = useSelector((store) => store.modal);
-  const { order } = useSelector((store) => store.order);
+  const { isLoading, hasError, currentViewedIngredient } = useSelector((store: any) => store.ingredients);
+  const { isModalVisible, modalTitle, modalContent } = useSelector((store: any) => store.modal);
+  const { order } = useSelector((store: any) => store.order);
 
   const dispatch = useDispatch();
 

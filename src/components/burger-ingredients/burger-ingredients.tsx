@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState, useRef, MutableRefObject, FC, SyntheticEvent } from "react";
 import styles from "./burger-ingredients.module.css";
 import { useDrag } from "react-dnd";
 import { v4 } from "uuid";
@@ -8,23 +8,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { OPEN_MODAL } from "../../services/actions/modal";
 import { VIEWED_INGREDIENT } from "../../services/actions/ingredients";
 import { useNavigate, useLocation } from "react-router-dom";
+import { IIngredient, IIngredientTypes, IIngredientInfo } from "../../utils/types";
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { ingredientData, constructorData } = useSelector((store) => store.ingredients);
+  const { ingredientData, constructorData } = useSelector((store: any) => store.ingredients);
 
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const bunRef = useRef<HTMLParagraphElement>(null) as MutableRefObject<HTMLParagraphElement>;
+  const sauceRef = useRef<HTMLParagraphElement>(null) as MutableRefObject<HTMLParagraphElement>;
+  const mainRef = useRef<HTMLParagraphElement>(null) as MutableRefObject<HTMLParagraphElement>;
 
-  const filterByType = (type) => ingredientData.filter((ingredient) => ingredient.type === type);
+  const filterByType = (type: any) => ingredientData.filter((ingredient: IIngredient) => ingredient.type === type);
   const buns = useMemo(() => filterByType("bun"), [ingredientData]);
   const sauces = useMemo(() => filterByType("sauce"), [ingredientData]);
   const mains = useMemo(() => filterByType("main"), [ingredientData]);
 
-  const modalOpen = (data) => {
+  const modalOpen = (data: any) => {
     dispatch({
       type: VIEWED_INGREDIENT,
       item: data,
@@ -38,13 +39,13 @@ const BurgerIngredients = () => {
   };
   const [currentTab, setCurrentTab] = useState("buns");
 
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: string) => {
     setCurrentTab(tab);
     const elementById = document.getElementById(tab);
     if (elementById) elementById.scrollIntoView({ behavior: "smooth" });
   };
 
-  const tabChanger = (e) => {
+  const tabChanger = (e: SyntheticEvent) => {
     const currentHeight = e.currentTarget.getBoundingClientRect().y + 50;
     const sauceHeight = sauceRef?.current?.getBoundingClientRect().y;
     const mainHeight = mainRef?.current?.getBoundingClientRect().y;
@@ -55,14 +56,14 @@ const BurgerIngredients = () => {
         : setCurrentTab("buns");
   };
 
-  const count = (id) => {
+  const count = (id: string) => {
     const ingredientCount =
-      constructorData.ingredients?.filter((ingredient) => ingredient._id === id).length || 0;
+      constructorData.ingredients?.filter((ingredient: IIngredient) => ingredient._id === id).length || 0;
     const bunCount = constructorData.bun?._id === id ? 2 : 0;
     return ingredientCount + bunCount;
   };
 
-  const IngredientsTypes = ({ title, data, typeId, innerRef }) => {
+  const IngredientsTypes: FC<IIngredientTypes> = ({ title, data, typeId, innerRef }) => {
     return (
       <>
         <div className="text text_type_main-medium mt-10" id={typeId} ref={innerRef}>
@@ -77,7 +78,7 @@ const BurgerIngredients = () => {
     );
   };
 
-  const IngredientCard = ({ data }) => {
+  const IngredientCard: FC<IIngredientInfo> = ({ data }) => {
     const [{ isDrag }, dragRef] = useDrag({
       type: "ingredient",
       item: { _uuid: v4(), ...data },
@@ -85,20 +86,15 @@ const BurgerIngredients = () => {
         isDrag: monitor.isDragging(),
       }),
     });
-    const ingredientOpacity = isDrag ? 0.2 : 1;
+    const opacity = isDrag ? 0.2 : 1;
     return (
-      <li
-        className={`${styles.info}`}
-        onClick={() => modalOpen(data)}
-        ref={dragRef}
-        style={{ ingredientOpacity }}
-      >
+      <li className={`${styles.info}`} onClick={() => modalOpen(data)} ref={dragRef} style={{ opacity }}>
         {constructorData && count(data._id) > 0 && <Counter count={count(data._id)}></Counter>}
 
         <img src={data.image} alt={data.name}></img>
         <div className={`${styles.price} text text_type_digits-default mt-1 mb-1`}>
           {data.price} &nbsp;
-          <CurrencyIcon />
+          <CurrencyIcon type="primary" />
         </div>
         <div className={`${styles.name} text text_type_main-default`}>{data.name}</div>
       </li>

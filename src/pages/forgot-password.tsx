@@ -1,27 +1,31 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, SyntheticEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { resetPasswordEnhancer, RESET_PASSWORD_SET_EMAIL, setForgotPasswordVisited } from "../services/actions/user";
+import {
+  resetPasswordEnhancer,
+  RESET_PASSWORD_SET_EMAIL,
+  setForgotPasswordVisited,
+} from "../services/actions/user";
 
 import styles from "./page.module.css";
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { resetPasswordEmail } = useSelector((store) => store.user);
+  const { resetPasswordEmail } = useSelector((store: any) => store.user);
 
   const resetPassword = useCallback(
-    (e) => {
+    (e: SyntheticEvent) => {
       e.preventDefault();
-      if (resetPasswordEmail.length) dispatch(resetPasswordEnhancer(resetPasswordEmail));
+      if (resetPasswordEmail.length) dispatch(resetPasswordEnhancer(resetPasswordEmail) as any);
       navigate("/reset-password");
     },
     [dispatch, resetPasswordEmail],
   );
 
   const setEmail = useCallback(
-    (e) => {
+    (e: { target: { value: string } }) => {
       dispatch({
         type: RESET_PASSWORD_SET_EMAIL,
         email: e.target.value,
@@ -46,6 +50,8 @@ const ForgotPasswordPage = () => {
             size={"default"}
             value={resetPasswordEmail || ""}
             onChange={setEmail}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
 
