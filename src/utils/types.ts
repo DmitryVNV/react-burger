@@ -54,7 +54,6 @@ export type TUser = {
   password: string;
 };
 
-export type TTarget = { target: { name: string; value: string } };
 export type TNewPassword = { newPassword: string; token: string };
 export type TTokenBody = { token: string | undefined };
 

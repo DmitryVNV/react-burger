@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import {
@@ -7,7 +7,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { setNewPasswordEnhancer } from "../services/actions/user";
-import { TTarget, TNewPassword } from "../utils/types";
+import { TNewPassword } from "../utils/types";
 import styles from "./page.module.css";
 
 const ResetPasswordPage = () => {
@@ -26,12 +26,12 @@ const ResetPasswordPage = () => {
     }
   }, [forgotPasswordVisited, navigate]);
   
-  const handleChange = (event: TTarget) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
     });
   };
-  const onSubmit = async (e: SyntheticEvent) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(setNewPasswordEnhancer(values.newPassword, values.token) as any);
 	navigate("/login");

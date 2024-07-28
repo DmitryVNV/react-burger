@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, SyntheticEvent } from "react";
+import React, { useCallback, useEffect, FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
   const { resetPasswordEmail } = useSelector((store: any) => store.user);
 
   const resetPassword = useCallback(
-    (e: SyntheticEvent) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (resetPasswordEmail.length) dispatch(resetPasswordEnhancer(resetPasswordEmail) as any);
       navigate("/reset-password");

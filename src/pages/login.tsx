@@ -1,9 +1,8 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { LOGIN_USER_REQUEST, loginUserEnhancer } from "../services/actions/user";
-import { TTarget } from "../utils/types";
 
 import styles from "./page.module.css";
 
@@ -16,12 +15,12 @@ const LoginPage = () => {
     password: "",
   });
 
-  const handleChange = (event: TTarget) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
     });
   };
-  const onSubmit = async (e: SyntheticEvent) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(loginUserEnhancer(values.email, values.password) as any);
     dispatch({

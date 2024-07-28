@@ -1,10 +1,10 @@
-import { useState, useCallback, SyntheticEvent } from "react";
+import { useState, useCallback, SyntheticEvent, FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserEnhancer } from "../services/actions/user";
 import { NavLink, Routes, Route } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderHistory from "../components/order-history/order-history";
-import { TUser, TTarget } from "../utils/types";
+import { TUser } from "../utils/types";
 import { logoutUserEnhancer } from "../services/actions/user";
 
 import styles from "./profile.module.css";
@@ -32,7 +32,7 @@ const ProfilePage = () => {
   }, []);
 
   const onSubmit = useCallback(
-    async (e: SyntheticEvent) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(updateUserEnhancer(values.name, values.email, values.password) as any);
       setIsFormChange(false);

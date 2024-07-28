@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, MutableRefObject, FC, SyntheticEvent } from "react";
+import React, { useMemo, useState, useRef, MutableRefObject, FC, UIEvent } from "react";
 import styles from "./burger-ingredients.module.css";
 import { useDrag } from "react-dnd";
 import { v4 } from "uuid";
@@ -45,7 +45,7 @@ const BurgerIngredients = () => {
     if (elementById) elementById.scrollIntoView({ behavior: "smooth" });
   };
 
-  const tabChanger = (e: SyntheticEvent) => {
+  const tabChanger = (e: UIEvent<HTMLElement>) => {
     const currentHeight = e.currentTarget.getBoundingClientRect().y + 50;
     const sauceHeight = sauceRef?.current?.getBoundingClientRect().y;
     const mainHeight = mainRef?.current?.getBoundingClientRect().y;

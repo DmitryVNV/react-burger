@@ -1,10 +1,10 @@
-import React, { useState, SyntheticEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Input, Button, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { registerUserEnhancer } from "../services/actions/user";
 import { loginUserEnhancer } from "../services/actions/user";
-import { TUser, TTarget } from "../utils/types";
+import { TUser } from "../utils/types";
 import styles from "./page.module.css";
 
 const RegisterPage = () => {
@@ -17,12 +17,12 @@ const RegisterPage = () => {
 
   const { registerUserFailed } = useSelector((state: any) => state.user);
 
-  const handleChange = (event: TTarget) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
     });
   };
-  const onSubmit = async (e: SyntheticEvent) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(registerUserEnhancer(values.email, values.password, values.name) as any);
     dispatch(loginUserEnhancer(values.email, values.password) as any);
