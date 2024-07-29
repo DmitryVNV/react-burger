@@ -9,7 +9,7 @@ import {
   CLEAR_DATA,
 } from "../actions/ingredients";
 
-const mainState = {
+const mainState: any = {
   isLoading: false,
   hasError: false,
   ingredientData: [],
@@ -20,7 +20,7 @@ const mainState = {
   currentIngredients: {},
 };
 
-export const ingredientsReducer = (state = mainState, action) => {
+export const ingredientsReducer = (state = mainState, action: any) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {

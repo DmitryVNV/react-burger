@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  Input,
-  PasswordInput,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { LOGIN_USER_REQUEST, loginUserEnhancer } from "../services/actions/user";
 
 import styles from "./page.module.css";
@@ -13,20 +9,23 @@ import styles from "./page.module.css";
 const LoginPage = () => {
   const dispatch = useDispatch();
 
-  const { loginUserFailed } = useSelector((state) => state.user);
-  const [values, setValues] = useState({});
+  const { loginUserFailed } = useSelector((state: any) => state.user);
+  const [values, setValues] = useState<{ email: string; password: string }>({
+    email: "",
+    password: "",
+  });
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
     });
   };
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginUserEnhancer(values.email, values.password));
-	 dispatch({
-        type: LOGIN_USER_REQUEST,
-      });
+    dispatch(loginUserEnhancer(values.email, values.password) as any);
+    dispatch({
+      type: LOGIN_USER_REQUEST,
+    });
   };
 
   return (
@@ -41,6 +40,8 @@ const LoginPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.email || ""}
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
           />
         </div>
         <div className="mb-6">
@@ -61,14 +62,18 @@ const LoginPage = () => {
         >
           Неправильный логин или пароль
         </span>
-		
+
         <p className="text text_type_main-default text_color_inactive mb-4 mt-20">
           <span>Вы — новый пользователь? </span>
-          <Link className={`text text_type_main-default ${styles.link}`} to="/register">Зарегистрироваться</Link>
+          <Link className={`text text_type_main-default ${styles.link}`} to="/register">
+            Зарегистрироваться
+          </Link>
         </p>
         <p className="text text_type_main-default text_color_inactive">
           <span>Забыли пароль? </span>
-          <Link className={`text text_type_main-default ${styles.link}`} to="/forgot-password">Восстановить пароль</Link>
+          <Link className={`text text_type_main-default ${styles.link}`} to="/forgot-password">
+            Восстановить пароль
+          </Link>
         </p>
       </section>
     </form>

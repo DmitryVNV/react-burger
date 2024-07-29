@@ -31,7 +31,7 @@ function App() {
     const navigate = useNavigate();
     const state = location.state || {};
     const background = state.background;
-    const { currentIngredients } = useSelector((store) => store.ingredients);
+    const { currentIngredients } = useSelector((store: any) => store.ingredients);
     const closeModal = () => {
       dispatch({
         type: CLOSE_MODAL,
@@ -48,11 +48,11 @@ function App() {
     };
 
     useEffect(() => {
-      dispatch(checkUserAuth());
+      dispatch(checkUserAuth() as any);
     }, [dispatch]);
 
     useEffect(() => {
-      dispatch(getIngredientsEnhancer());
+      dispatch(getIngredientsEnhancer() as any);
     }, [dispatch]);
 
     return (

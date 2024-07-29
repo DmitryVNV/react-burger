@@ -1,10 +1,10 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, SyntheticEvent, FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserEnhancer } from "../services/actions/user";
 import { NavLink, Routes, Route } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import OrderHistory from "../components/order-history/order-history";
-
+import { TUser } from "../utils/types";
 import { logoutUserEnhancer } from "../services/actions/user";
 
 import styles from "./profile.module.css";
@@ -12,11 +12,11 @@ import styles from "./profile.module.css";
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const onLogout = () => {
-    dispatch(logoutUserEnhancer());
+    dispatch(logoutUserEnhancer() as any);
   };
 
-  const { userData } = useSelector((store) => store.user);
-  const [values, setValues] = useState({
+  const { userData } = useSelector((store: any) => store.user);
+  const [values, setValues] = useState<TUser>({
     name: userData ? userData.name : "",
     email: userData ? userData.email : "",
     password: "",
@@ -24,7 +24,7 @@ const ProfilePage = () => {
 
   const [isFormChange, setIsFormChange] = useState(false);
 
-  const handleChange = useCallback((event) => {
+  const handleChange = useCallback((event: { target: { name: string; value: string } }) => {
     setIsFormChange(true);
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
@@ -32,9 +32,9 @@ const ProfilePage = () => {
   }, []);
 
   const onSubmit = useCallback(
-    async (e) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      dispatch(updateUserEnhancer(values.name, values.email, values.password));
+      dispatch(updateUserEnhancer(values.name, values.email, values.password) as any);
       setIsFormChange(false);
       setValues({ ...values, password: "" });
     },
@@ -42,7 +42,7 @@ const ProfilePage = () => {
   );
 
   const handleCancel = useCallback(
-    async (e) => {
+    async (e: SyntheticEvent) => {
       e.preventDefault();
       setIsFormChange(false);
       setValues((values) => {
@@ -61,17 +61,14 @@ const ProfilePage = () => {
               <p className={`text_type_main-medium pl-2 ${styles.link}`}>Профиль</p>
             </li>
             <li>
-              <NavLink
-                to="/profile/orders"
-                className={`text_type_main-medium text_color_inactive pl-2 ${styles.link}`}
-              >
+              <NavLink to="/profile/orders" className={`text_type_main-medium text_color_inactive pl-2 ${styles.link}`}>
                 История заказов
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/login"
-                exact="true"
+                end
                 className={`text_type_main-medium pl-2 text_color_inactive ${styles.link}`}
                 onClick={onLogout}
               >
@@ -97,6 +94,8 @@ const ProfilePage = () => {
               size={"default"}
               value={values.name || ""}
               onChange={handleChange}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
             />
 
             <div className="mt-6 mb-6">
@@ -108,6 +107,8 @@ const ProfilePage = () => {
                 size={"default"}
                 value={values.email || ""}
                 onChange={handleChange}
+                onPointerEnterCapture={() => {}}
+                onPointerLeaveCapture={() => {}}
               />
             </div>
             <Input
@@ -118,6 +119,8 @@ const ProfilePage = () => {
               size={"default"}
               value={values.password || ""}
               onChange={handleChange}
+              onPointerEnterCapture={() => {}}
+              onPointerLeaveCapture={() => {}}
             />
             <div className="mt-6" style={{ visibility: isFormChange ? "visible" : "hidden" }}>
               <Button htmlType="reset" type="secondary" size="medium" name="cancel" onClick={handleCancel}>

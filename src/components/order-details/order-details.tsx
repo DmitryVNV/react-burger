@@ -1,8 +1,11 @@
-import PropTypes from "prop-types";
+import { FC } from "react";
 import styles from "./order-details.module.css";
 import okImage from "../../images/ok.png";
 
-const OrderDetails = (props) => {
+type TOrderDetails = {
+  orderNumber: number;
+}
+const OrderDetails: FC<TOrderDetails> = (props) => {
   return (
     <section className={styles.main}>
       <h1 className="mb-8 mt-20 text text_type_digits-large">
@@ -25,7 +28,3 @@ const OrderDetails = (props) => {
 };
 
 export default OrderDetails;
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.number.isRequired,
-};

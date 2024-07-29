@@ -1,10 +1,10 @@
 import styles from "./ingredient-details.module.css";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState, FC } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import PropTypes from "prop-types";
+import { INutritions, IIngredientDetails, IIngredient, TViewedIngredient } from "../../utils/types";
 
-const Nutritions = (props) => {
+const Nutritions: FC<INutritions> = (props) => {
   return (
     <li>
       {props.name}
@@ -13,19 +13,19 @@ const Nutritions = (props) => {
   );
 };
 
-const IngredientDetails = (props) => {
-  const [currentIngredients, setViewedIngredient] = useState({
+const IngredientDetails: FC<IIngredientDetails> = (props) => {
+  const [currentIngredients, setViewedIngredient] = useState<TViewedIngredient>({
     image_large: "",
     name: "",
-    calories: "",
-    proteins: "",
-    fat: "",
-    carbohydrates: "",
+    calories: 0,
+    proteins: 0,
+    fat: 0,
+    carbohydrates: 0,
     isLoading: false,
   });
-  const ingredients = useSelector((store) => store.ingredients.ingredientData);
+  const ingredients = useSelector((store: any) => store.ingredients.ingredientData);
 
-  const { id } = useParams();
+  const { id } = useParams<string>();
   const finalId = id != null ? id : props.data?._id;
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const IngredientDetails = (props) => {
       isLoading: true,
     }));
 
-    const ingredient = ingredients.find((el) => el._id === finalId);
+    const ingredient = ingredients.find((el: IIngredient) => el._id === finalId);
     if (ingredient) {
       setViewedIngredient({
         image_large: ingredient.image_large,
@@ -73,7 +73,3 @@ const IngredientDetails = (props) => {
 };
 
 export default memo(IngredientDetails);
-
-IngredientDetails.propTypes = {
-  title: PropTypes.string,
-};

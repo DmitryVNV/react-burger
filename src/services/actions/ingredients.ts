@@ -11,7 +11,7 @@ export const VIEWED_INGREDIENT = "VIEWED_INGREDIENT";
 export const CLEAR_DATA = "CLEAR_DATA";
 
 export const getIngredientsEnhancer = () => {
-  return function (dispatch) {
+  return function (dispatch: any) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST,
     });

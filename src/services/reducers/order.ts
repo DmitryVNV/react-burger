@@ -12,7 +12,7 @@ const mainState = {
   orderError: "",
 };
 
-export const orderReducer = (state = mainState, action) => {
+export const orderReducer = (state = mainState, action: any) => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST: {
       return {
