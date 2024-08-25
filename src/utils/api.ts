@@ -1,10 +1,33 @@
-import { TCheckSuccess, TIngredientsData, TTokenBody } from "./types";
+import { TTokenBody, TCheckSuccess } from "../services/types";
 
 export const ROOT_API_URL = "https://norma.nomoreparties.space/api";
+export const WS_URL = 'wss://norma.nomoreparties.space/orders/all';
+export const WS_AUTH_URL = 'wss://norma.nomoreparties.space/orders';
+
+export const expiresAccess = new Date(Date.now() + 20 * 60 * 1000).toUTCString();
+export const expiresRefresh = new Date(Date.now() + 20 * 60 * 100000).toUTCString();
+
+export const setCookie = (name: string, value: string, expires: string) =>
+  (document.cookie = `${name}=${value};Expires=${expires}`);
+
+export const getCookie = (name: string) => {
+  const matches = document.cookie.match(
+    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+};
+
+export const deleteCookie = (name: string) => (document.cookie = `${name}=;Expires=${new Date(0).toUTCString()}`);
 
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
+};
+
+const headersSendOrder = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+  "Authorization": ""+ getCookie("accessToken"),
 };
 
 const checkSuccess = <T,>(data: TCheckSuccess<T>) => {
@@ -22,10 +45,10 @@ export const responseIngredients = async () => {
   return (await checkSuccess(data)).data;
 };
 
-export const sendOrder = async (ingredientIds: string) => {
+export const sendOrder = async (ingredientIds: string[]) => {
   const response = await fetch(ROOT_API_URL + "/orders", {
     method: "POST",
-    headers: headers,
+    headers: headersSendOrder,
     body: JSON.stringify({
       ingredients: ingredientIds,
     }),
@@ -33,21 +56,6 @@ export const sendOrder = async (ingredientIds: string) => {
   const data = await checkResponse(response);
   return await checkSuccess(data);
 };
-
-export const expiresAccess = new Date(Date.now() + 20 * 60 * 1000).toUTCString();
-export const expiresRefresh = new Date(Date.now() + 20 * 60 * 100000).toUTCString();
-
-export const setCookie = (name: string, value: string, expires: string) =>
-  (document.cookie = `${name}=${value};Expires=${expires}`);
-
-export const getCookie = (name: string) => {
-  const matches = document.cookie.match(
-    new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"),
-  );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-};
-
-export const deleteCookie = (name: string) => (document.cookie = `${name}=;Expires=${new Date(0).toUTCString()}`);
 
 export const passwordReset = async (email: string) => {
   const response = await fetch(ROOT_API_URL + "/password-reset", {
@@ -166,4 +174,13 @@ const fetchWithRefreshToken = (url: string, options: RequestInit) => {
         }
       });
     });
+};
+
+export const getOrder = async (number: string) => {
+  const res = await  fetch(`${ROOT_API_URL}/orders/${number}`, {
+    method: 'GET',
+    headers: headers,
+  });
+  const data = await checkResponse(res);
+  return await checkSuccess(data).orders[0];
 };

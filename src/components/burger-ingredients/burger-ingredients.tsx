@@ -6,7 +6,7 @@ import { Tab, CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useSelector, useDispatch } from "react-redux";
 import { OPEN_MODAL } from "../../services/actions/modal";
-import { VIEWED_INGREDIENT } from "../../services/actions/ingredients";
+import { VIEWED_INGREDIENT } from "../../services/constants/ingredients";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IIngredient, IIngredientTypes, IIngredientInfo } from "../../utils/types";
 

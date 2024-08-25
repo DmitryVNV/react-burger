@@ -7,10 +7,10 @@ import BurgerIngredients from "../components/burger-ingredients/burger-ingredien
 import BurgerConstructor from "../components/burger-constructor/burger-constructor";
 import Modal from "../components/modal/modal";
 
-import { VIEWED_INGREDIENT, CLEAR_DATA } from "../services/actions/ingredients";
+import { VIEWED_INGREDIENT, CLEAR_DATA } from "../services/constants/ingredients";
 
-import { CLOSE_MODAL } from "../services/actions/modal";
-import { DELETE_ORDER } from "../services/actions/order";
+import { CLOSE_MODAL } from "../services/constants/modal";
+import { DELETE_ORDER } from "../services/constants/order";
 
 import styles from "./main.module.css";
 
@@ -35,10 +35,12 @@ function MainPage() {
       });
   };
   useEffect(() => {
-    if (order.success) {
-      dispatch({
-        type: CLEAR_DATA,
-      });
+    if (order) {
+      if (order?.success) {
+        dispatch({
+          type: CLEAR_DATA,
+        });
+      }
     }
   }, [order, dispatch]);
   return (

@@ -4,7 +4,7 @@ import styles from "./ingredient-constructor.module.css";
 import { DragIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
-import { DELETE_INGREDIENT, EXCHANGE_INGREDIENTS } from "../../services/actions/ingredients";
+import { DELETE_INGREDIENT, EXCHANGE_INGREDIENTS } from "../../services/constants/ingredients";
 import { IIngredientWithUuid } from "../../utils/types";
 
 type TConstructorIngredient = {

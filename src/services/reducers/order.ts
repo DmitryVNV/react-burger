@@ -3,16 +3,25 @@ import {
   CREATE_ORDER_SUCCESS,
   CREATE_ORDER_FAILED,
   DELETE_ORDER,
-} from "../actions/order";
+} from "../constants/order";
+import { TOrderActions } from "../actions/order";
+import { TOrder } from "../types";
 
-const mainState = {
-  order: {},
+export type TOrderState = {
+  order: TOrder | null;
+  orderIsLoading: boolean;
+  orderSuccess: boolean;
+  orderError: string;
+};
+
+const initialState: TOrderState = {
+  order: null,
   orderIsLoading: false,
   orderSuccess: false,
   orderError: "",
 };
 
-export const orderReducer = (state = mainState, action: any) => {
+export const orderReducer = (state = initialState, action: TOrderActions): TOrderState => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST: {
       return {
@@ -30,10 +39,10 @@ export const orderReducer = (state = mainState, action: any) => {
       };
     }
     case CREATE_ORDER_FAILED: {
-      return { order: {}, orderIsLoading: false, orderError: action.error };
+      return { ...state, order: null, orderIsLoading: false, orderError: action.error };
     }
     case DELETE_ORDER: {
-      return { ...state, order: {} };
+      return { ...state, order: null };
     }
 
     default: {

@@ -6,7 +6,7 @@ import ConstructorIngredient from "../ingredient-constructor/ingredient-construc
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT } from "../../services/actions/ingredients";
+import { ADD_INGREDIENT } from "../../services/constants/ingredients";
 import { OPEN_MODAL } from "../../services/actions/modal";
 import { sendOrderEnhancer } from "../../services/actions/order";
 import { IIngredientWithUuid } from "../../utils/types";

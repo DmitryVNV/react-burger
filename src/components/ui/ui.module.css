@@ -1,0 +1,32 @@
+.price {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.text_done {
+  color: #00ba95;
+}
+
+.text_pending {
+  color: #ff456a;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  border: 2px double transparent;
+  background: linear-gradient(#120000, #131316),
+    radial-gradient(#801ab2, #4c4cff);
+  border-radius: 50%;
+  background-clip: content-box, border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image {
+  width: 150%;
+  height: auto;
+}

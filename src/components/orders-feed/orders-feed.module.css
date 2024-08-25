@@ -1,0 +1,30 @@
+.component {
+  width: 45%;
+}
+
+.component a {
+  width: 100%;
+}
+
+.ul {
+  display: flex;
+  list-style-type: none;
+  flex-direction: column;
+  padding-left: 0px;
+  max-height: 540px;
+  overflow-y: scroll;
+}
+
+.li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 90%;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: #d4d4d4;
+}

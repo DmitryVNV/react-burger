@@ -7,7 +7,7 @@ import {
   EXCHANGE_INGREDIENTS,
   VIEWED_INGREDIENT,
   CLEAR_DATA,
-} from "../actions/ingredients";
+} from "../constants/ingredients";
 
 const mainState: any = {
   isLoading: false,

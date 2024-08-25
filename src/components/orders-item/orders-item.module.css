@@ -1,0 +1,42 @@
+.component {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 38px;
+  background: #1e1e2a;
+  min-height: 48px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #d4d4d4;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  position: relative;
+}
+
+.li {
+  margin-right: -20px;
+  position: relative;
+}
+
+.overlay {
+  background: rgba(20, 20, 20, 0.75);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 3px;
+  right: -15px;
+}
