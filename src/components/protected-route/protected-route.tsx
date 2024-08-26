@@ -1,6 +1,6 @@
 import { FC, ReactChild } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 type TProtectedRouteProps = {
   children?: ReactChild;
@@ -8,7 +8,7 @@ type TProtectedRouteProps = {
 };
 
 const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, onlyAuth = true }) => {
-  const { userData } = useSelector((store: any) => store.user);
+  const { userData } = useSelector((store) => store.user);
   const location = useLocation();
 
   if (!onlyAuth && userData.name !== "") {
@@ -24,4 +24,6 @@ const ProtectedRoute: FC<TProtectedRouteProps> = ({ children, onlyAuth = true })
 };
 
 export const ForAuth = ProtectedRoute;
-export const ForNonAuth: FC<TProtectedRouteProps> = ({ children }) => <ProtectedRoute children={children} onlyAuth={false} />;
+export const ForNonAuth: FC<TProtectedRouteProps> = ({ children }) => (
+  <ProtectedRoute children={children} onlyAuth={false} />
+);

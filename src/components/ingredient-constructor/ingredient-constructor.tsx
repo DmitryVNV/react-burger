@@ -1,14 +1,13 @@
 import React, { FC, MutableRefObject, useRef } from "react";
-import PropTypes from "prop-types";
 import styles from "./ingredient-constructor.module.css";
 import { DragIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
 import { DELETE_INGREDIENT, EXCHANGE_INGREDIENTS } from "../../services/constants/ingredients";
-import { IIngredientWithUuid } from "../../utils/types";
+import { IIngredientExtended } from "../../services/types";
 
 type TConstructorIngredient = {
-  ingredient: IIngredientWithUuid;
+  ingredient: IIngredientExtended;
   index: number;
 };
 
@@ -24,14 +23,14 @@ const ConstructorIngredient: FC<TConstructorIngredient> = (props) => {
     });
   };
 
-  const [handlerId, drop] = useDrop<IIngredientWithUuid>({
+  const [handlerId, drop] = useDrop<IIngredientExtended>({
     accept: "dragIngredient",
     collect(monitor: DropTargetMonitor) {
       return {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item: IIngredientWithUuid, monitor: DropTargetMonitor) {
+    hover(item: IIngredientExtended, monitor: DropTargetMonitor) {
       if (!dragRef.current) return;
 
       const dragIndex = item.index;

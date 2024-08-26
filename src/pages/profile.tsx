@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../services/hooks";
 import { NavLink, useLocation } from "react-router-dom";
 import OrderHistory from "../components/order-history/order-history";
 import UserProfile from "../components/user-profile/user-profile";
@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const pathname: string = useLocation().pathname;
   const onLogout = () => {
-    dispatch(logoutUserEnhancer() as any);
+    dispatch(logoutUserEnhancer());
   };
 
   return (

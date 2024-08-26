@@ -1,6 +1,11 @@
 import { sendOrder } from "../../utils/api";
 
-import { CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, CREATE_ORDER_FAILED, DELETE_ORDER } from "../constants/order";
+import {
+  CREATE_ORDER_REQUEST,
+  CREATE_ORDER_SUCCESS,
+  CREATE_ORDER_FAILED,
+  DELETE_ORDER,
+} from "../constants/order";
 import { TAppDispatch, TAppThunk, TOrder } from "../types";
 
 export interface ICreateOrderRequestAction {
@@ -18,10 +23,14 @@ export interface IDeleteOrderAction {
   readonly type: typeof DELETE_ORDER;
 }
 
-export type TOrderActions = ICreateOrderRequestAction | ICreateOrderSuccessAction | ICreateOrderFailedAction | IDeleteOrderAction;
+export type TOrderActions =
+  | ICreateOrderRequestAction
+  | ICreateOrderSuccessAction
+  | ICreateOrderFailedAction
+  | IDeleteOrderAction;
 
-export const sendOrderEnhancer: TAppThunk = (ingredientIds: Array<string>) => {
-  return function (dispatch: TAppDispatch) {
+export const sendOrderEnhancer = (ingredientIds: Array<string>): TAppThunk<void> => {
+  return (dispatch: TAppDispatch) => {
     dispatch({
       type: CREATE_ORDER_REQUEST,
     });
@@ -35,7 +44,7 @@ export const sendOrderEnhancer: TAppThunk = (ingredientIds: Array<string>) => {
         } else {
           dispatch({
             type: CREATE_ORDER_FAILED,
-			error: "Ошибка создания заказа",
+            error: "Ошибка создания заказа",
           });
         }
       })

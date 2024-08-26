@@ -1,8 +1,8 @@
 import styles from "./ingredient-details.module.css";
 import React, { memo, useEffect, useState, FC } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import { useParams } from "react-router-dom";
-import { INutritions, IIngredientDetails, IIngredient, TViewedIngredient } from "../../utils/types";
+import { INutritions, IIngredientDetails, IIngredient, TViewedIngredient } from "../../services/types";
 
 const Nutritions: FC<INutritions> = (props) => {
   return (
@@ -23,7 +23,7 @@ const IngredientDetails: FC<IIngredientDetails> = (props) => {
     carbohydrates: 0,
     isLoading: false,
   });
-  const ingredients = useSelector((store: any) => store.ingredients.ingredientData);
+  const ingredients = useSelector((store) => store.ingredients.ingredientData);
 
   const { id } = useParams<string>();
   const finalId = id != null ? id : props.data?._id;

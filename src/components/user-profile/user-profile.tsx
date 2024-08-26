@@ -9,7 +9,7 @@ import styles from "./user-profile.module.css";
 const UserProfile = () => {
   const dispatch = useDispatch();
 
-  const { userData } = useSelector((store: any) => store.user);
+  const { userData } = useSelector((store) => store.user);
   const [values, setValues] = useState<TUser>({
     name: userData ? userData.name : "",
     email: userData ? userData.email : "",
@@ -28,7 +28,7 @@ const UserProfile = () => {
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      dispatch(updateUserEnhancer(values.name, values.email, values.password) as any);
+      dispatch(updateUserEnhancer(values.name, values.email, values.password));
       setIsFormChange(false);
       setValues({ ...values, password: "" });
     },

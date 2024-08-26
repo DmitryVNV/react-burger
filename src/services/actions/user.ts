@@ -14,7 +14,7 @@ import {
   deleteCookie,
 } from "../../utils/api";
 
-import { TUser } from "../types";
+import { TUser, TAppDispatch } from "../types";
 
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
@@ -65,6 +65,9 @@ export interface IResetPasswordFailedAction {
 export interface IResetPasswordSetEmailAction {
   readonly type: typeof RESET_PASSWORD_SET_EMAIL;
   readonly email: string;
+}
+export interface ISetForgotPasswordVisitedAction {
+  readonly type: typeof SET_FORGOT_PASSWORD_VISITED;
 }
 
 export interface ISetNewPasswordRequestAction {
@@ -153,6 +156,7 @@ export type TUserActions =
   | ISetNewPasswordRequestAction
   | ISetNewPasswordSuccessAction
   | ISetNewPasswordFailedAction
+  | ISetForgotPasswordVisitedAction
   | IRefreshTokenRequestAction
   | IRefreshTokenSuccessAction
   | IRefreshTokenFailedAction
@@ -173,7 +177,7 @@ export type TUserActions =
   | IUpdateUserFailedAction;
 
 export const resetPasswordEnhancer = (email: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: RESET_PASSWORD_REQUEST,
     });
@@ -195,7 +199,7 @@ export const resetPasswordEnhancer = (email: string) => {
 };
 
 export const setNewPasswordEnhancer = (newPassword: string, token: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: SET_NEW_PASSWORD_REQUEST,
     });
@@ -209,6 +213,7 @@ export const setNewPasswordEnhancer = (newPassword: string, token: string) => {
         } else {
           dispatch({
             type: SET_NEW_PASSWORD_FAILED,
+            error: "Ошибка при смене пароля",
           });
         }
       })
@@ -223,7 +228,7 @@ export const setNewPasswordEnhancer = (newPassword: string, token: string) => {
 };
 
 export const registerUserEnhancer = (email: string, password: string, name: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: REGISTER_USER_REQUEST,
     });
@@ -253,7 +258,7 @@ export const registerUserEnhancer = (email: string, password: string, name: stri
 };
 
 export const loginUserEnhancer = (email: string, password: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: LOGIN_USER_REQUEST,
     });
@@ -285,7 +290,7 @@ export const loginUserEnhancer = (email: string, password: string) => {
 };
 
 export const logoutUserEnhancer = () => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     const tokenBody = { token: getCookie("refreshToken") };
     dispatch({
       type: LOGOUT_USER_REQUEST,
@@ -317,7 +322,7 @@ export const logoutUserEnhancer = () => {
 };
 
 export const updateTokenEnhancer = () => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: REFRESH_TOKEN_REQUEST,
     });
@@ -347,7 +352,7 @@ export const updateTokenEnhancer = () => {
 };
 
 export const getUserEnhancer = () => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: GET_USER_REQUEST,
     });
@@ -371,7 +376,7 @@ export const getUserEnhancer = () => {
 };
 
 export const updateUserEnhancer = (name: string, email: string, password: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: UPDATE_USER_REQUEST,
     });
@@ -400,7 +405,7 @@ export const updateUserEnhancer = (name: string, email: string, password: string
 };
 
 export const checkUserAuth = () => {
-  return function (dispatch: any) {
+  return function (dispatch: TAppDispatch) {
     const isAccessTokenExist = document.cookie.indexOf("accessToken=") !== -1;
     const isRefreshTokenExist = document.cookie.indexOf("refreshToken=") !== -1;
     if (!isAccessTokenExist && isRefreshTokenExist) {
@@ -454,6 +459,6 @@ export const checkUserAuth = () => {
   };
 };
 
-export const setForgotPasswordVisited = () => ({
+export const setForgotPasswordVisited = (): ISetForgotPasswordVisitedAction => ({
   type: SET_FORGOT_PASSWORD_VISITED,
 });

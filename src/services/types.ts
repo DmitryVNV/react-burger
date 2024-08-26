@@ -1,5 +1,5 @@
 import { MutableRefObject } from "react";
-import { ThunkAction } from "redux-thunk";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { Action, ActionCreator, Dispatch } from "redux";
 import { store } from "./store";
 import { TIngredientsActions } from "./actions/ingredients";
@@ -8,6 +8,7 @@ import { TModalActions } from "./actions/modal";
 import { TUserActions } from "./actions/user";
 import { TWSActions } from "./actions/ws-actions";
 import { TWSAuthActions } from "./actions/ws-auth-actions";
+import { rootReducer } from "./reducers";
 
 import "redux-thunk/extend-redux";
 
@@ -19,12 +20,10 @@ type TApplicationActions =
   | TWSActions
   | TWSAuthActions;
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
-export type TAppDispatch = Dispatch<TApplicationActions>;
-export type TAppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, RootState, TApplicationActions>
->;
+export type TAppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
+export type TAppThunk<TReturn = void> = ThunkAction<TReturn, RootState, unknown, TApplicationActions>;
 
 export interface IIngredient {
   _id: string;
@@ -44,7 +43,7 @@ export interface IIngredientExtended extends IIngredient {
   _uuid: string;
   index: number;
 }
-export type TCurrentViewedIngredient = Pick<
+export type TViewedIngredient = Pick<
   IIngredient,
   "name" | "image_large" | "calories" | "proteins" | "fat" | "carbohydrates"
 > & { isLoading: boolean };
@@ -59,7 +58,7 @@ export interface ICurrentViewedIngredient {
   isLoading: boolean;
 }
 
-export interface IIngredientTypeList {
+export interface IIngredientTypes {
   title: string;
   data: Array<IIngredient>;
   typeId: string;
@@ -71,12 +70,25 @@ export interface INutritionFact {
   fact: number;
 }
 
-export interface IIngredientDetails {
-  title?: string;
+export interface INutritions {
+  name: string;
+  data: number;
 }
 
+export interface IIngredientDetails {
+  title?: string;
+  data?: IIngredient;
+}
 export interface IParamTypes {
   id: string;
+}
+
+export interface IIngredientInfo {
+  data: IIngredient;
+}
+
+export interface OrderState {
+  order: TOrder | null;
 }
 
 export type TUser = {

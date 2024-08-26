@@ -21,7 +21,7 @@ const filterOrdersByStatus = (arr: Array<TWsOrder>) => {
 };
 
 const OrdersBoard = () => {
-  const { total, totalToday, orders } = useSelector((store: any) => store.ws);
+  const { total, totalToday, orders } = useSelector((store) => store.ws);
   const statusArrays = filterOrdersByStatus(orders);
   const doneArray = statusArrays?.done;
   return (

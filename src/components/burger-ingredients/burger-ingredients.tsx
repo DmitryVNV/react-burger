@@ -4,32 +4,31 @@ import { useDrag } from "react-dnd";
 import { v4 } from "uuid";
 import { Tab, CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/hooks";
 import { OPEN_MODAL } from "../../services/actions/modal";
 import { VIEWED_INGREDIENT } from "../../services/constants/ingredients";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IIngredient, IIngredientTypes, IIngredientInfo } from "../../utils/types";
+import { IIngredient, IIngredientTypes, IIngredientInfo } from "../../services/types";
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { ingredientData, constructorData } = useSelector((store: any) => store.ingredients);
+  const { ingredientData, constructorData } = useSelector(
+    (store: { ingredients: { ingredientData: IIngredient[]; constructorData: any } }) => store.ingredients,
+  );
 
   const bunRef = useRef<HTMLParagraphElement>(null) as MutableRefObject<HTMLParagraphElement>;
   const sauceRef = useRef<HTMLParagraphElement>(null) as MutableRefObject<HTMLParagraphElement>;
   const mainRef = useRef<HTMLParagraphElement>(null) as MutableRefObject<HTMLParagraphElement>;
 
-  const filterByType = (type: any) => ingredientData.filter((ingredient: IIngredient) => ingredient.type === type);
+  const filterByType = (type: IIngredient["type"]) =>
+    ingredientData.filter((ingredient: IIngredient) => ingredient.type === type);
   const buns = useMemo(() => filterByType("bun"), [ingredientData]);
   const sauces = useMemo(() => filterByType("sauce"), [ingredientData]);
   const mains = useMemo(() => filterByType("main"), [ingredientData]);
 
-  const modalOpen = (data: any) => {
-    dispatch({
-      type: VIEWED_INGREDIENT,
-      item: data,
-    });
+  const modalOpen = (data: IIngredient) => {
     dispatch({
       type: OPEN_MODAL,
       modalTitle: "Детали ингредиента",

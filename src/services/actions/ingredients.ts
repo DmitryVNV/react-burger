@@ -54,7 +54,7 @@ export type TIngredientsActions =
   | IClearConstructorDataAction;
 
 export const getIngredientsEnhancer = () => {
-  return function (dispatch: any) {
+  return function (dispatch: (action: TIngredientsActions) => void) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST,
     });

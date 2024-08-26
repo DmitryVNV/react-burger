@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks";
 import { Link } from "react-router-dom";
 import { Input, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { LOGIN_USER_REQUEST, loginUserEnhancer } from "../services/actions/user";
@@ -9,7 +9,7 @@ import styles from "./page.module.css";
 const LoginPage = () => {
   const dispatch = useDispatch();
 
-  const { loginUserFailed } = useSelector((state: any) => state.user);
+  const { loginUserFailed } = useSelector((state) => state.user);
   const [values, setValues] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
@@ -22,7 +22,7 @@ const LoginPage = () => {
   };
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginUserEnhancer(values.email, values.password) as any);
+    dispatch(loginUserEnhancer(values.email, values.password));
     dispatch({
       type: LOGIN_USER_REQUEST,
     });

@@ -47,7 +47,7 @@ function OrderInfoPage() {
 
   useEffect(() => {
     getOrder(id as string)
-      .then((data: any) => {
+      .then((data: TWsOrder) => {
         setCurrentViewedOrder({
           ingredients: data.ingredients,
           _id: data._id,
@@ -63,7 +63,7 @@ function OrderInfoPage() {
       });
   }, [id]);
 
-  const { ingredientData } = useSelector((store: any) => store.ingredients);
+  const { ingredientData } = useSelector((store) => store.ingredients);
   const burgerIngredients = getBurgerIngredients(currentOrder?.ingredients, ingredientData);
   const uniqIngredients: Array<string> = Array.from(new Set(currentOrder?.ingredients));
   const ingredientsCount = burgerIngredients && getIngredientsCount(burgerIngredients);

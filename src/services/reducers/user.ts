@@ -27,7 +27,46 @@ import {
   SET_FORGOT_PASSWORD_VISITED,
 } from "../actions/user";
 
-const initialState = {
+import { TUserActions } from "../actions/user";
+
+interface UserState {
+  userData: {
+    name: string;
+    email: string;
+  };
+  resetPasswordEmail: string;
+  resetPasswordRequest: boolean;
+  resetPasswordFailed: boolean;
+  resetPasswordMessage: string | null;
+
+  setNewPasswordRequest: boolean;
+  setNewPasswordFailed: boolean;
+  setNewPasswordMessage: string | null;
+
+  registerUserRequest: boolean;
+  registerUserFailed: boolean;
+
+  loginUserRequest: boolean;
+  loginUserFailed: boolean;
+  isAuthenthicated: boolean;
+
+  logoutUserRequest: boolean;
+  logoutUserFailed: boolean;
+  logoutUserMessage: string | null;
+
+  refreshTokenRequest: boolean;
+  refreshTokenFailed: boolean;
+
+  getUserRequest: boolean;
+  getUserFailed: boolean;
+
+  updateUserRequest: boolean;
+  updateUserFailed: boolean;
+
+  forgotPasswordVisited: boolean;
+}
+
+const initialState: UserState = {
   userData: {
     name: "",
     email: "",
@@ -65,7 +104,7 @@ const initialState = {
   forgotPasswordVisited: false,
 };
 
-export const userReducer = (state = initialState, action: any) => {
+export const userReducer = (state = initialState, action: TUserActions): UserState => {
   switch (action.type) {
     case RESET_PASSWORD_REQUEST: {
       return {

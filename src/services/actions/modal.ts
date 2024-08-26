@@ -3,7 +3,7 @@ export const CLOSE_MODAL = "CLOSE_MODAL";
 
 export interface IOpenModalAction {
   readonly type: typeof OPEN_MODAL;
-  readonly modalTitle: string;
+  readonly modalTitle: string | null;
   readonly modalContent: JSX.Element;
 }
 export interface ICloseModalAction {

@@ -7,7 +7,7 @@ import { TWsOrder } from "../../services/types";
 
 function OrdersFeed() {
   const location = useLocation();
-  const { orders } = useSelector((store: any) => store.ws);
+  const { orders } = useSelector((store) => store.ws);
 
   return (
     <section className={styles.component}>

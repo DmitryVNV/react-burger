@@ -3,8 +3,8 @@ import AppHeader from "../app-header/app-header";
 
 import Modal from "../modal/modal";
 import { CLOSE_MODAL } from "../../services/actions/modal";
-import { VIEWED_INGREDIENT } from "../../services/constants/ingredients";
 import { checkUserAuth } from "../../services/actions/user";
+import { useDispatch } from "../../services/hooks";
 
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ForAuth, ForNonAuth } from "../protected-route/protected-route";
@@ -13,8 +13,6 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredientsEnhancer } from "../../services/actions/ingredients";
 
 import OrdersFeed from "../orders-feed/orders-feed";
-
-import { useSelector, useDispatch } from "react-redux";
 import {
   MainPage,
   LoginPage,
@@ -34,17 +32,11 @@ function App() {
     const navigate = useNavigate();
     const state = location.state || {};
     const background = state.background;
-    const { currentIngredients } = useSelector((store: any) => store.ingredients);
 
     const closeModalIngredient = () => {
       dispatch({
         type: CLOSE_MODAL,
       });
-      currentIngredients &&
-        dispatch({
-          type: VIEWED_INGREDIENT,
-          item: null,
-        });
       navigate("/");
     };
 
@@ -63,11 +55,11 @@ function App() {
     };
 
     useEffect(() => {
-      dispatch(checkUserAuth() as any);
+      dispatch(checkUserAuth());
     }, [dispatch]);
 
     useEffect(() => {
-      dispatch(getIngredientsEnhancer() as any);
+      dispatch(getIngredientsEnhancer());
     }, [dispatch]);
 
     return (

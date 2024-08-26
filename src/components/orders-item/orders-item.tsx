@@ -22,7 +22,7 @@ const getOrderPrice = (arr: Array<IIngredient>) =>
   arr?.reduce((acc: number, curr: IIngredient) => (acc += curr.price), 0);
 
 const OrdersItem: FC<TProps> = ({ number, name, ingredients, createdAt, status }) => {
-  const { ingredientData } = useSelector((store: any) => store.ingredients);
+  const { ingredientData } = useSelector((store) => store.ingredients);
   const burgerIngredients = getBurgerIngredients(ingredients, ingredientData);
   const orderPrice = getOrderPrice(burgerIngredients);
 
