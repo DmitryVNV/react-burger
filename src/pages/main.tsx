@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "../services/hooks";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -7,17 +7,17 @@ import BurgerIngredients from "../components/burger-ingredients/burger-ingredien
 import BurgerConstructor from "../components/burger-constructor/burger-constructor";
 import Modal from "../components/modal/modal";
 
-import { VIEWED_INGREDIENT, CLEAR_DATA } from "../services/actions/ingredients";
+import { CLEAR_DATA } from "../services/constants/ingredients";
 
-import { CLOSE_MODAL } from "../services/actions/modal";
-import { DELETE_ORDER } from "../services/actions/order";
+import { CLOSE_MODAL } from "../services/constants/modal";
+import { DELETE_ORDER } from "../services/constants/order";
 
 import styles from "./main.module.css";
 
 function MainPage() {
-  const { isLoading, hasError, currentViewedIngredient } = useSelector((store: any) => store.ingredients);
-  const { isModalVisible, modalTitle, modalContent } = useSelector((store: any) => store.modal);
-  const { order } = useSelector((store: any) => store.order);
+  const { isLoading, hasError } = useSelector((store) => store.ingredients);
+  const { isModalVisible, modalTitle, modalContent } = useSelector((store) => store.modal);
+  const { order } = useSelector((store) => store);
 
   const dispatch = useDispatch();
 
@@ -28,17 +28,14 @@ function MainPage() {
     dispatch({
       type: DELETE_ORDER,
     });
-    currentViewedIngredient &&
-      dispatch({
-        type: VIEWED_INGREDIENT,
-        item: null,
-      });
   };
   useEffect(() => {
-    if (order.success) {
-      dispatch({
-        type: CLEAR_DATA,
-      });
+    if (order) {
+      if (order?.orderSuccess) {
+        dispatch({
+          type: CLEAR_DATA,
+        });
+      }
     }
   }, [order, dispatch]);
   return (
@@ -54,7 +51,7 @@ function MainPage() {
         )}
       </div>
       {isModalVisible && (
-        <Modal title={modalTitle} closeModalWindow={closeModal}>
+        <Modal title={modalTitle ?? undefined} closeModalWindow={closeModal}>
           {modalContent}
         </Modal>
       )}

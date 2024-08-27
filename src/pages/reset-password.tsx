@@ -1,13 +1,9 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  Input,
-  Button,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Input, Button, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { setNewPasswordEnhancer } from "../services/actions/user";
-import { TNewPassword } from "../utils/types";
+import { TNewPassword } from "../services/types";
 import styles from "./page.module.css";
 
 const ResetPasswordPage = () => {
@@ -17,15 +13,15 @@ const ResetPasswordPage = () => {
     newPassword: "",
     token: "",
   });
-  
-  const forgotPasswordVisited = useSelector((state: any) => state.user.forgotPasswordVisited);
-  
+
+  const forgotPasswordVisited = useSelector((state) => state.user.forgotPasswordVisited);
+
   useEffect(() => {
     if (!forgotPasswordVisited) {
-      navigate('/forgot-password');
+      navigate("/forgot-password");
     }
   }, [forgotPasswordVisited, navigate]);
-  
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((values) => {
       return { ...values, [event.target.name]: event.target.value };
@@ -33,8 +29,8 @@ const ResetPasswordPage = () => {
   };
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setNewPasswordEnhancer(values.newPassword, values.token) as any);
-	navigate("/login");
+    dispatch(setNewPasswordEnhancer(values.newPassword, values.token));
+    navigate("/login");
   };
 
   return (
@@ -57,7 +53,7 @@ const ResetPasswordPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.token || ""}
-			onPointerEnterCapture={() => {}}
+            onPointerEnterCapture={() => {}}
             onPointerLeaveCapture={() => {}}
           />
         </div>
@@ -68,7 +64,9 @@ const ResetPasswordPage = () => {
 
         <p className="text text_type_main-default text_color_inactive mt-20">
           <span>Вспомнили пароль? </span>
-          <Link className={`text text_type_main-default ${styles.link}`} to="/login">Войти</Link>
+          <Link className={`text text_type_main-default ${styles.link}`} to="/login">
+            Войти
+          </Link>
         </p>
       </section>
     </form>

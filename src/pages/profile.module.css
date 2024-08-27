@@ -11,16 +11,14 @@
   margin: calc(var(--offset-base-size) * 6) 0;
 }
 
-.userContainer {
-  width: 60%;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .menuContainer {
   width: 40%;
 }
 
 .link {
   text-decoration: none;
+}
+
+.activeLink {
+  color: white;
 }

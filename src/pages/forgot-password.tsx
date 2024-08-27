@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, FormEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useCallback, useEffect, FormEvent, ChangeEvent } from "react";
+import { useSelector, useDispatch } from "../services/hooks";
 import { useNavigate, Link } from "react-router-dom";
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -13,19 +13,19 @@ import styles from "./page.module.css";
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { resetPasswordEmail } = useSelector((store: any) => store.user);
+  const { resetPasswordEmail } = useSelector((store) => store.user);
 
   const resetPassword = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (resetPasswordEmail.length) dispatch(resetPasswordEnhancer(resetPasswordEmail) as any);
+      if (resetPasswordEmail.length) dispatch(resetPasswordEnhancer(resetPasswordEmail));
       navigate("/reset-password");
     },
     [dispatch, resetPasswordEmail],
   );
 
   const setEmail = useCallback(
-    (e: { target: { value: string } }) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       dispatch({
         type: RESET_PASSWORD_SET_EMAIL,
         email: e.target.value,

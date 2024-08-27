@@ -4,18 +4,18 @@ import styles from "./burger-constructor.module.css";
 import { CurrencyIcon, ConstructorElement, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import ConstructorIngredient from "../ingredient-constructor/ingredient-constructor";
 import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT } from "../../services/actions/ingredients";
+import { ADD_INGREDIENT } from "../../services/constants/ingredients";
 import { OPEN_MODAL } from "../../services/actions/modal";
 import { sendOrderEnhancer } from "../../services/actions/order";
-import { IIngredientWithUuid } from "../../utils/types";
+import { IIngredientExtended } from "../../services/types";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: IIngredientExtended) {
       dispatch({
         type: ADD_INGREDIENT,
         item,
@@ -25,30 +25,33 @@ const BurgerConstructor = () => {
       isHover: monitor.isOver(),
     }),
   });
-  const { isAuthenthicated } = useSelector((store: any) => store.user);
+  const { isAuthenthicated } = useSelector((store) => store.user);
   const { constructorData } = useSelector((store: any) => store.ingredients);
-  const { order, orderError, orderIsLoading } = useSelector((store: any) => store.order);
-  const bun: IIngredientWithUuid = constructorData.bun;
-  const ingredients: IIngredientWithUuid[] = constructorData.ingredients;
+  const { order, orderError, orderIsLoading } = useSelector((store) => store.order);
+  const bun: IIngredientExtended = constructorData.bun;
+  const ingredients: IIngredientExtended[] = constructorData.ingredients;
   const navigate = useNavigate();
 
   const modalOpen = async () => {
     if (isAuthenthicated) {
       const ingredientIds: string[] = [bun._id, ...ingredients.map((ingredient) => ingredient._id)];
-      dispatch(sendOrderEnhancer(ingredientIds) as any);
+      dispatch(sendOrderEnhancer(ingredientIds));
     } else {
       navigate("/login");
     }
   };
 
   useEffect(() => {
-    if (order?.order?.number > 0) {
-      dispatch({
-        type: OPEN_MODAL,
-        modalContent: <OrderDetails orderNumber={order.order.number} />,
-      });
+    if (order) {
+      if (order!.order?.number > 0) {
+        dispatch({
+          type: OPEN_MODAL,
+          modalTitle: null,
+          modalContent: <OrderDetails orderNumber={order!.order.number} />,
+        });
+      }
     }
-  }, [order]);
+  }, [order, dispatch]);
 
   useEffect(() => {
     if (orderError) {
@@ -70,7 +73,7 @@ const BurgerConstructor = () => {
 
   useEffect(() => {
     const ingredientsPrice = constructorData.ingredients?.reduce(
-      (sum: number, ingredient: IIngredientWithUuid) => sum + ingredient.price,
+      (sum: number, ingredient: IIngredientExtended) => sum + ingredient.price,
       0,
     );
     const bunPrice = constructorData.bun?.price || 0;

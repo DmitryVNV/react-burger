@@ -7,9 +7,23 @@ import {
   EXCHANGE_INGREDIENTS,
   VIEWED_INGREDIENT,
   CLEAR_DATA,
-} from "../actions/ingredients";
+} from "../constants/ingredients";
 
-const mainState: any = {
+import { IIngredient } from "../types";
+import { TIngredientsActions } from "../actions/ingredients";
+
+interface IngredientsState {
+  isLoading: boolean;
+  hasError: boolean;
+  ingredientData: IIngredient[];
+  constructorData: {
+    bun: IIngredient | null;
+    ingredients: IIngredient[];
+  };
+  currentIngredients: IIngredient | {};
+}
+
+const mainState: IngredientsState = {
   isLoading: false,
   hasError: false,
   ingredientData: [],
@@ -20,7 +34,7 @@ const mainState: any = {
   currentIngredients: {},
 };
 
-export const ingredientsReducer = (state = mainState, action: any) => {
+export const ingredientsReducer = (state = mainState, action: TIngredientsActions): IngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -40,7 +54,7 @@ export const ingredientsReducer = (state = mainState, action: any) => {
     case GET_INGREDIENTS_FAILED: {
       return {
         ingredientData: [],
-        constructorData: {},
+        constructorData: { bun: null, ingredients: [] },
         currentIngredients: {},
         hasError: true,
         isLoading: false,
@@ -71,7 +85,7 @@ export const ingredientsReducer = (state = mainState, action: any) => {
         constructorData: {
           ...state.constructorData,
           ingredients: [...state.constructorData.ingredients].filter(
-            (ingredient) => ingredient._uuid !== action.id,
+            (ingredient) => ingredient._id !== action.id,
           ),
         },
       };

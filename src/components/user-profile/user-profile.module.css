@@ -1,0 +1,11 @@
+.component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userContainer {
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+}

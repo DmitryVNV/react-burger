@@ -29,7 +29,7 @@ const AppHeader = () => {
           </li>
           <li>
             <NavLink
-              to="/orders"
+              to="/feed"
               className={({ isActive }) =>
                 `${isActive ? headerStyles.link_active : headerStyles.link}`
               }

@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../services/hooks";
 import { Link } from "react-router-dom";
 import { Input, Button, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { registerUserEnhancer } from "../services/actions/user";
 import { loginUserEnhancer } from "../services/actions/user";
-import { TUser } from "../utils/types";
+import { TUser } from "../services/types";
 import styles from "./page.module.css";
 
 const RegisterPage = () => {
@@ -15,7 +15,7 @@ const RegisterPage = () => {
     password: "",
   });
 
-  const { registerUserFailed } = useSelector((state: any) => state.user);
+  const { registerUserFailed } = useSelector((state) => state.user);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((values) => {
@@ -24,8 +24,8 @@ const RegisterPage = () => {
   };
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(registerUserEnhancer(values.email, values.password, values.name) as any);
-    dispatch(loginUserEnhancer(values.email, values.password) as any);
+    dispatch(registerUserEnhancer(values.email, values.password, values.name));
+    dispatch(loginUserEnhancer(values.email, values.password));
   };
 
   return (
@@ -40,7 +40,7 @@ const RegisterPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.name || ""}
-			onPointerEnterCapture={() => {}}
+            onPointerEnterCapture={() => {}}
             onPointerLeaveCapture={() => {}}
           />
         </div>
@@ -52,7 +52,7 @@ const RegisterPage = () => {
             size={"default"}
             onChange={handleChange}
             value={values.email || ""}
-			onPointerEnterCapture={() => {}}
+            onPointerEnterCapture={() => {}}
             onPointerLeaveCapture={() => {}}
           />
         </div>
