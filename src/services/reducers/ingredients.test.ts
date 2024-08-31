@@ -56,7 +56,6 @@ describe("Ingredient reducer", () => {
       ...mainState,
       ingredientData: [],
       constructorData: { bun: null, ingredients: [] },
-      currentViewedIngredient: null,
       hasError: true,
       isLoading: false,
     };
@@ -96,7 +95,7 @@ describe("Ingredient reducer", () => {
   it("Check if handle VIEWED_INGREDIENT", () => {
     const state = {
       ...mainState,
-      currentViewedIngredient: ingredient,
+      currentIngredients: ingredient,
     };
     expect(ingredientsReducer(undefined, { type: VIEWED_INGREDIENT, item: ingredient })).toEqual(state);
   });

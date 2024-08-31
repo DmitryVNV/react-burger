@@ -64,32 +64,35 @@ describe("Application", () => {
   });
 
   it("Проверка добавления ингредиентов в конструктор", () => {
+	cy.get(burgerConstructor).as('constructor');
     cy.get(`[alt="${bunName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
     cy.get(`[alt="${mainIngredientName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
     cy.get(`[alt="${sauceName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
   });
 
   it("Перетаскивание новой булки в конструктор должно успешно заменять старую булку", () => {
+	cy.get(burgerConstructor).as('constructor');
     cy.get(`[alt="${bunName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
     cy.get(`[alt="${newBunName}"]`).trigger("dragstart");
-    cy.get('[data-cy="constructor"]').trigger("drop");
+    cy.get('@constructor').trigger("drop");
   });
 
   it("Заказ бургера, проверка наличия модального окна с номером заказа", () => {
+	cy.get(burgerConstructor).as('constructor');
     cy.visit("/login");
     cy.get(userLoginField).type(userEmail);
     cy.get(userPassField).type(userPass);
     cy.get(userLoginButton).click();
     cy.get(`[alt="${bunName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
     cy.get(`[alt="${mainIngredientName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
     cy.get(`[alt="${sauceName}"]`).trigger("dragstart");
-    cy.get(burgerConstructor).trigger("drop");
+    cy.get('@constructor').trigger("drop");
     cy.get('[data-cy="order-button"]').click();
     cy.get(modalClass).should("be.visible");
     cy.get(orderNumber)

@@ -98,7 +98,7 @@ describe("user reducer", () => {
       setNewPasswordRequest: false,
       setNewPasswordFailed: false,
       setNewPasswordMessage: "",
-      resetPasswordMessage: "",
+      resetPasswordMessage: null,
     };
     expect(
       userReducer(undefined, {
