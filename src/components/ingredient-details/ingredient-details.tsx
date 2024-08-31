@@ -61,7 +61,7 @@ const IngredientDetails: FC<IIngredientDetails> = (props) => {
     <section className={styles.ingredient}>
       <h1 className="text text_type_main-large mt-10 pt-3">{props.title}</h1>
       <img src={currentIngredients.image_large} alt={currentIngredients.name} />
-      <div className="text text_type_main-medium mb-8 mt-4">{currentIngredients.name}</div>
+      <div className="text text_type_main-medium mb-8 mt-4" data-cy="ingredient-title">{currentIngredients.name}</div>
       <ul className="text text_type_main-default text_color_inactive mb-15">
         <Nutritions name="Калории, ккал" data={currentIngredients.calories} />
         <Nutritions name="Белки, г" data={currentIngredients.proteins} />

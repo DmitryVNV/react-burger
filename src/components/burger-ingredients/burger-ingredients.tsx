@@ -6,7 +6,6 @@ import { Tab, CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useSelector, useDispatch } from "../../services/hooks";
 import { OPEN_MODAL } from "../../services/actions/modal";
-import { VIEWED_INGREDIENT } from "../../services/constants/ingredients";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IIngredient, IIngredientTypes, IIngredientInfo } from "../../services/types";
 
@@ -87,7 +86,13 @@ const BurgerIngredients = () => {
     });
     const opacity = isDrag ? 0.2 : 1;
     return (
-      <li className={`${styles.info}`} onClick={() => modalOpen(data)} ref={dragRef} style={{ opacity }}>
+      <li
+        className={`${styles.info}`}
+        onClick={() => modalOpen(data)}
+        ref={dragRef}
+        style={{ opacity }}
+        data-testid={`ingredient-${data._id}`}
+      >
         {constructorData && count(data._id) > 0 && <Counter count={count(data._id)}></Counter>}
 
         <img src={data.image} alt={data.name}></img>

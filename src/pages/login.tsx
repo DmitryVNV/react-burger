@@ -53,7 +53,7 @@ const LoginPage = () => {
           />
         </div>
 
-        <Button htmlType="submit" type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium" data-cy="login-button">
           Войти
         </Button>
         <span

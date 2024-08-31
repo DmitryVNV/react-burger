@@ -14,7 +14,7 @@ export type TOrderState = {
   orderError: string;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   order: null,
   orderIsLoading: false,
   orderSuccess: false,

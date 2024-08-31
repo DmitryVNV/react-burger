@@ -8,7 +8,7 @@ interface ModalState {
 
 interface OpenModalAction {
   type: typeof OPEN_MODAL;
-  modalTitle: string;
+  modalTitle: string | null;
   modalContent: React.ReactNode;
 }
 
@@ -18,7 +18,7 @@ interface CloseModalAction {
 
 type ModalAction = OpenModalAction | CloseModalAction;
 
-const mainState: ModalState = {
+export const mainState: ModalState = {
   isModalVisible: false,
   modalTitle: null,
   modalContent: null,
