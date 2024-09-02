@@ -23,7 +23,7 @@ interface IngredientsState {
   currentIngredients: IIngredient | {};
 }
 
-const mainState: IngredientsState = {
+export const mainState: IngredientsState = {
   isLoading: false,
   hasError: false,
   ingredientData: [],

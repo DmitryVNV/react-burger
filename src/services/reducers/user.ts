@@ -66,7 +66,7 @@ interface UserState {
   forgotPasswordVisited: boolean;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   userData: {
     name: "",
     email: "",

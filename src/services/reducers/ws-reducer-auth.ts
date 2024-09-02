@@ -16,7 +16,7 @@ type TWsReduserAuthState = {
   totalToday: number | null;
 };
 
-const initialState: TWsReduserAuthState = {
+export const initialState: TWsReduserAuthState = {
   wsConnected: false,
   error: null,
   orders: [],

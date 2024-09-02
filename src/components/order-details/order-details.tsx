@@ -8,7 +8,7 @@ type TOrderDetails = {
 const OrderDetails: FC<TOrderDetails> = (props) => {
   return (
     <section className={styles.main}>
-      <h1 className="mb-8 mt-20 text text_type_digits-large">
+      <h1 className="mb-8 mt-20 text text_type_digits-large" data-cy="order-number">
         {props.orderNumber}
       </h1>
       <div className="text text_type_main-medium mb-15">

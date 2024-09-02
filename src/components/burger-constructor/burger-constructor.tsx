@@ -85,7 +85,11 @@ const BurgerConstructor = () => {
   }, [constructorData]);
 
   return (
-    <div className={`${styles.constructor} ${isHover ? styles.onHover : ""}`} ref={dropTarget}>
+    <div
+      className={`${styles.constructor} ${isHover ? styles.onHover : ""}`}
+      ref={dropTarget}
+      data-cy="constructor"
+    >
       <div className="mt-25 mb-4 ml-4 mr-4 pl-8">
         {bun && (
           <ConstructorElement
@@ -131,6 +135,7 @@ const BurgerConstructor = () => {
             size="large"
             onClick={modalOpen}
             disabled={orderIsLoading || bun === null ? true : false}
+            data-cy="order-button"
           >
             {orderIsLoading ? "Оформление...." : "Оформить заказ"}
           </Button>
